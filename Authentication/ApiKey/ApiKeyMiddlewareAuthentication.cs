@@ -32,7 +32,7 @@ public sealed class ApiKeyMiddleware(RequestDelegate next)
 		ReadOnlySpan<byte> span = Encoding.UTF8.GetBytes(apiKey);
 		ReadOnlySpan<byte> userSpan = Encoding.UTF8.GetBytes(userApiKey);
 		
-		if (CryptographicOperations.FixedTimeEquals(span, userSpan)) {
+		if (!CryptographicOperations.FixedTimeEquals(span, userSpan)) {
 			context.Response.StatusCode = StatusCodes.Status401Unauthorized;
 			await context.Response.WriteAsync("Unauthorized client.");
 			return;
