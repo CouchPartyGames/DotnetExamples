@@ -1,6 +1,7 @@
-#:sdk Microsoft.Sdk.NET.Web
+#!/usr/bin/env -S dotnet run
+#:sdk Microsoft.NET.Sdk.Web
 
-var builder = WebApplication.CreateBuilder();
+var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 app.MapGet("/", () => "Hello World");
 app.Run();
