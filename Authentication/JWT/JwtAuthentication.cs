@@ -1,7 +1,9 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
+#:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthorization();
@@ -10,7 +12,24 @@ builder.Services.AddAuthentication()
 
 var app = builder.Build();
 app.UseAuthentication();
-app.UseAuthentication();
-app.MapGet("/", () => "hello world!");
-app.MapGet("/protected", () => "Secret");
+app.UseAuthorization();
+app.MapGet("/", () =>
+{
+    return Results.Content("<h1>Hello World!</h1><a href=/login>Login</a>&nbsp;<a href=/protected>Protected Page</a>",
+        "text/html");
+});
+app.MapGet("/login", () =>
+{
+    ctx.SignInAsync(new ClaimsPrincipal(new []
+    {
+        new ClaimsIdentity([
+            new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Email, "test@test.com"),
+        ])
+    }));
+    
+    return Results.Text("You have logged in and received a cookie");
+});
+app.MapGet("/protected", () => "Secret")
+    .RequireAuthorization();
 app.Run();
