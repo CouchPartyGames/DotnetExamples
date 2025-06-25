@@ -7,7 +7,7 @@
 // https://github.com/scottbrady91/AspNetCore-SignInWithApple-Example/tree/main/ScottBrady91.SignInWithApple.Example
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;     // necessary for AddOpenIdConnect
 using System.Security.Cryptography;
 using System;
 
@@ -18,8 +18,12 @@ builder.Services.AddAuthentication(opts =>
         opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         opts.DefaultChallengeScheme = "Apple";
     })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddOpenConnectId("Apple", opts =>
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opts =>
+    {
+        opts.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        opts.Cookie.IsEssential = true;
+    })
+    .AddOpenIdConnect("Apple", opts =>
     {
         opts.ClientId = Environment.GetEnvironmentVariable("APPLE_CLIENT_ID");
         opts.ClientSecret = Environment.GetEnvironmentVariable("APPLE_CLIENT_SECRET");
