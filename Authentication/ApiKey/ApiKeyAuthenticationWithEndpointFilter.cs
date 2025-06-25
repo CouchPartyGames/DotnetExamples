@@ -50,8 +50,11 @@ public sealed class ApiKeyEndpointFilterAuthentication : IEndpointFilter
             return Results.Unauthorized();
         }
         
-        // Secret manager or database
+        // Pull this from a Secret manager or Environment variable
+        // For multi tenant, you can use the database
         string secretKey = "replace-me";
+        
+        // Compare API Keys to ensure they match
         if (!IsMatchingAndPreventTimingAttack(userApiKey, secretKey))
         {
             return Results.Unauthorized();
