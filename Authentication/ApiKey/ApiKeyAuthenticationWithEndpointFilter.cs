@@ -2,7 +2,7 @@
 #:sdk Microsoft.NET.Sdk.Web
 
 
-// API Key Authentication
+// API Key Authentication for Minimal API
 // Uses Endpoint filter to protect specific routes
 //
 // curl -v -H "X-Api-Key: " http://localhost:5000/
@@ -50,7 +50,7 @@ public sealed class ApiKeyEndpointFilterAuthentication : IEndpointFilter
             return Results.Unauthorized();
         }
         
-        // Pull this from a Secret manager or Environment variable
+        // Pull this from a Secrets manager or Environment variable
         // For multi tenant, you can use the database
         string secretKey = "replace-me";
         

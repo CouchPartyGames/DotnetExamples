@@ -1,7 +1,7 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
 
-// API Key Authentication
+// API Key Authentication for Minimal Api Or MVC
 // Use middleware to protect ALL Routes
 //
 // curl -v -H "X-Api-Key: " http://localhost:5000/
