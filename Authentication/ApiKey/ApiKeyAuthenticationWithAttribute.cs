@@ -61,7 +61,7 @@ public sealed class ApiKeyAuthorizationFilter : IAuthorizationFilter
 [ApiKey]
 [Route("[controller]")]
 [ApiController]
-public sealed class MyController : ControllerBase
+public sealed class HomeController : ControllerBase
 {
     
 }

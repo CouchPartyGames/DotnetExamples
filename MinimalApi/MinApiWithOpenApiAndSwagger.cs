@@ -1,16 +1,19 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.OpenApi@9.0.*
+#:package Swashbuckle.AspNetCore.SwaggerUi@9.0.*
 
-// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-9.0
 var builder = WebApplication.CreateBuilder(args);
-
-    // Inject OpenAPI
 builder.Services.AddOpenApi();
 var app = builder.Build();
 
-    // http://localhost:5000/openapi/v1.json
+// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/aspnetcore-openapi?view=aspnetcore-9.0
+// http://localhost:5000/openapi/v1.json
 app.MapOpenApi();
+app.UseSwaggerUI(opts =>
+{
+    opts.SwaggerEndpoint("/openapi/v1.json", "My API V1");
+});
 
 app.MapGet("/", () => "Hello World");
 app.MapPost("/", () => "Hello World");

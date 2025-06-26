@@ -5,6 +5,7 @@
 #:package Microsoft.Extensions.DependencyInjection@10.*-preview*
 
 // Google Authentication
+// https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-9.0
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
