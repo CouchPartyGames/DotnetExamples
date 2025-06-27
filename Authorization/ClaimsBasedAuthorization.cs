@@ -10,6 +10,8 @@ var app = builder.Build();
 // Note: Authentication middleware must come before Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 app.MapGet("/", () => "Hello World");
 app.MapGet("/auth", () => "Hello World")
     .RequireAuthorization();

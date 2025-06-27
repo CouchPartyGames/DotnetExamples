@@ -9,7 +9,7 @@ builder.Services.AddAuthorization(opts =>
     // Create a Policy
     opts.AddPolicy(AuthorizationConsts.AllowEditingPolicy, policy =>
     {
-        // Add 
+        // Add a Requirement
         policy.Requirements.Add(new SameUserRequirement());
     });
 });
@@ -19,9 +19,10 @@ var app = builder.Build();
 // Note: Authentication middleware must come before Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 app.MapGet("/", () => "Hello World");
-app.MapGet("/auth", () => "Hello World")
-    .RequireAuthorization();
+
 app.MapGet("/resource", (IAuthorizationService authorizationService) =>
 {
     var authorizationResult = await authorizationService.AuthorizeAsync(
