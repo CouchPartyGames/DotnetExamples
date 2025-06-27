@@ -1,15 +1,13 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.SignalR@1.2.0
-#:package Microsoft.AspNetCore.SignalR.StackExchangeRedis@9.0.*
 
 using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Inject SignalR using Redis Backplane
-builder.Services.AddSignalR()
-    .AddStackExchangeRedis("<your_Redis_connection_string>");
+// Inject SignalR
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
