@@ -1,6 +1,9 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
 
+// A Simple Hello World example using Controllers
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 var app = builder.Build();
@@ -12,12 +15,10 @@ app.Run();
 [ApiController]
 public class HelloController : ControllerBase
 {
-    // GET: api/TodoItems
+    // GET: api/hello
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
+    public ActionResult GetHello()
     {
-        return await _context.TodoItems
-            .Select(x => ItemToDTO(x))
-            .ToListAsync();
+        return Ok("Hello World!");
     }
 }
