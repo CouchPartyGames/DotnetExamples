@@ -1,3 +1,7 @@
+#!/usr/bin/env -S dotnet run
+#:sdk Microsoft.NET.Sdk.Web
+#:package Yarp.ReverseProxy@2.1.0
+
 using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,14 +31,11 @@ var clusters = new[]
         }
     }
 };
-
-// Add the reverse proxy capability and load the configuration from memory
+    // Add the reverse proxy capability and load the configuration from memory
 builder.Services.AddReverseProxy()
     .LoadFromMemory(routes, clusters);
 
 var app = builder.Build();
-
-// Register the reverse proxy routes
+    // Register the reverse proxy routes
 app.MapReverseProxy();
-
 app.Run();

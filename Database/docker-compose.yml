@@ -1,0 +1,16 @@
+
+services:
+  db:
+    image: postgres:17-alpine # Using a specific version and a lightweight image
+    restart: always
+    environment:
+      POSTGRES_USER: example # Replace with your desired username
+      POSTGRES_PASSWORD: examplepass # Replace with a strong password
+      POSTGRES_DB: example # Replace with your desired database name
+    ports:
+      - "5432:5432" # Maps host port 5432 to container port 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persists data in a named volume
+
+volumes:
+  pgdata: # Defines the named volume for data persistence
