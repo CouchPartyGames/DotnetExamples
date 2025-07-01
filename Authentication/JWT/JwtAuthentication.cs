@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthorization();
@@ -18,7 +19,7 @@ app.MapGet("/", () =>
     return Results.Content("<h1>Hello World!</h1><a href=/login>Login</a>&nbsp;<a href=/protected>Protected Page</a>",
         "text/html");
 });
-app.MapGet("/login", () =>
+app.MapGet("/login", (HttpContext ctx) =>
 {
     ctx.SignInAsync(new ClaimsPrincipal(new []
     {

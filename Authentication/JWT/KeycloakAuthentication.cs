@@ -2,10 +2,20 @@
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*
 
-var builder = WebApplicationn.CreateBuilder(args);
+using Microsoft.IdentityModel.Tokens;
+
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
-    .AddJwtBearer();
+    .AddJwtBearer(opts =>
+    {
+        opts.RequireHttpsMetadata = false;
+        opts.MetadataAddress = "todo";
+        opts.TokenValidationParameters = new TokenValidationParameters
+        {
+            //ValidIssuer = "todo";
+        };
+    });
 
 var app = builder.Build();
 app.UseAuthentication();
