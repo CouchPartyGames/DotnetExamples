@@ -34,6 +34,12 @@ app.MapGet("/login", (HttpContext ctx) =>
 });
 app.MapGet("/protected", () => "Secret")
     .RequireAuthorization();
+app.MapGet("/user", (ClaimsPrincipal principal) =>
+{
+    var claims = principal.Claims.ToDictionary(c => c.Type, c => c.Value);
+    return Results.Ok(claims);
+}).RequireAuthorization();
+
 app.Run();
 
 

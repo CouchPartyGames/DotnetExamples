@@ -5,7 +5,6 @@
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
     .AddJwtBearer(opts =>
     {
@@ -16,8 +15,15 @@ builder.Services.AddAuthentication()
             //ValidIssuer = "todo";
         };
     });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGet("/user", (ClaimsPrincipal principal) =>
+{
+    var claims = principal.Claims.ToDictionary(c => c.Type, c => c.Value);
+    return Results.Ok(claims);
+}).RequireAuthorization();
+
 app.Run();
