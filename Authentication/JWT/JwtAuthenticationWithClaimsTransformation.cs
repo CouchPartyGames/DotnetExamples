@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
     .AddJwtBearer();
+builder.Services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
 
 var app = builder.Build();
 app.UseAuthentication();
@@ -34,3 +35,24 @@ app.MapGet("/login", (HttpContext ctx) =>
 app.MapGet("/protected", () => "Secret")
     .RequireAuthorization();
 app.Run();
+
+
+// Add Claims Transformation 
+// Note: This process runs every single request
+public sealed class CustomClaimsTransformation : IClaimsTransformation
+{
+    public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
+    {
+        if (/* if claim already exists, exit early */ false)
+        {
+            return Task.FromResult(principal);
+        }
+        
+            // Add to Principal
+        var identity = new ClaimsIdentity();
+        //identity.AddClaim(new Claim('SomeClaim', 'SomeClaimValue'));
+        principal.AddIdentity(identity);
+        
+        return Task.FromResult(principal);
+    }
+}
