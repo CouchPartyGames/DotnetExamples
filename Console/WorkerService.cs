@@ -29,6 +29,14 @@ public sealed class ExampleHostedService : IHostedService, IHostedLifecycleServi
         appLifetime.ApplicationStopped.Register(OnStopped);
     }
 
+	public override async Task ExecuteAsync(CancellationToken stoppingToken = default) {
+		using PeriodicTimer _timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
+		while (await _timer.WaitForNextTickAsync(stoppingToken))
+		{
+			Console.WriteLine("Doing Working");
+		}
+	}
+
     Task IHostedLifecycleService.StartingAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("1. StartingAsync has been called.");

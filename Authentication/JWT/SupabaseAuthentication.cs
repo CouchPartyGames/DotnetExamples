@@ -1,6 +1,7 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*
+#:property UserSecretsId dotnet-examples
 
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;

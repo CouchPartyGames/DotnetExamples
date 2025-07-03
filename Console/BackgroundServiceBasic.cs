@@ -10,26 +10,26 @@ var app = builder.Build();
 await app.RunAsync();
 
 
-public sealed class MyBackgroundService : BackgroundService {
+public sealed class MyBackgroundService(ILogger<MyBackgroundService> logger) : BackgroundService {
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken = default) {
-		using PeriodicTimer _timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
+		logger.LogInformation("Do Work");
+		using PeriodicTimer _timer = new PeriodicTimer(TimeSpan.FromSeconds(2));
 		while (await _timer.WaitForNextTickAsync(stoppingToken))
 		{
-			Console.WriteLine("Doing Working");
+			logger.LogInformation("Do Work");
 		}
-	}
-
-
-	public override Task StartAsync(CancellationToken stoppingToken)
-	{
-		Console.WriteLine("Starting...");
 		return Task.CompletedTask;
 	}
 
-	public override Task StopAsync(CancellationToken stoppingToken)
-	{
-		Console.WriteLine("Stopping...");
+
+	public override Task StartAsync(CancellationToken stoppingToken) {
+		logger.LogInformation("Started");
+		return Task.CompletedTask;
+	}
+
+	public override Task StopAsync(CancellationToken stoppingToken) {
+		logger.LogInformation("Stopped");
 		return Task.CompletedTask;
 	}
 }

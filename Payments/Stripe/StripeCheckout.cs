@@ -1,6 +1,7 @@
 #!/usr/bin/env -S dotnet run
 #:sdk Microsoft.NET.Sdk.Web
 #:package Stripe.net@48.2.0
+#:property UserSecretsId dotnet-examples
 
 using System;
 using Stripe;

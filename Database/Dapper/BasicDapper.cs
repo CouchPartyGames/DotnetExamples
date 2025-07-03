@@ -1,6 +1,7 @@
 #!/usr/bin/env -S dotnet run
 #:package Dapper@2.1.66
 #:package Npgsql@9.0.3
+#:property UserSecretsId dotnet-examples
 
 using Npgsql;
 using Dapper;
