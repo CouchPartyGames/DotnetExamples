@@ -19,4 +19,17 @@ public sealed class MyBackgroundService : BackgroundService {
 			Console.WriteLine("Doing Working");
 		}
 	}
+
+
+	public override Task StartAsync(CancellationToken stoppingToken)
+	{
+		Console.WriteLine("Starting...");
+		return Task.CompletedTask;
+	}
+
+	public override Task StopAsync(CancellationToken stoppingToken)
+	{
+		Console.WriteLine("Stopping...");
+		return Task.CompletedTask;
+	}
 }
