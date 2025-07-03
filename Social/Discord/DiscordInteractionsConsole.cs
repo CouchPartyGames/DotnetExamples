@@ -3,6 +3,7 @@
 #:package NetCord@1.0.0-alpha.391
 #:package NetCord.Hosting@1.0.0-alpha.391
 #:package NetCord.Hosting.Services@1.0.0-alpha.391
+#:property UserSecretsId dotnet-examples
 
 // Discord Interactions using HTTP
 // Interactions like user executing a slash command
@@ -20,7 +21,7 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services
     .AddDiscordGateway(opts =>
     {
-        opts.Token = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
+        opts.Token = builder.Configuration["Discord:Token"];
     })
     .AddApplicationCommands();
 

@@ -2,6 +2,7 @@
 #:package NetCord@1.0.0-alpha.391
 #:package NetCord.Hosting.AspNetCore@1.0.0-alpha.391
 #:package NetCord.Hosting.Services@1.0.0-alpha.391
+#:property UserSecretsId dotnet-examples
 
 // Discord Interactions using HTTP
 // Interactions like user executing a slash command
@@ -15,13 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDiscordRest(opt =>
     {
-        opt.Token = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
-        opt.PublicKey = Environment.GetEnvironmentVariable("DISCORD_API_KEY");
+        opt.Token = builder.Configuration["Discord:Token"];
+        opt.PublicKey = builder.Configuration["Discord:PublicKey"];
     })
-    .AddHttpApplicationCommands(opts => {
-        // Add Localization Support (Requires the folder to exist)
-        opts.LocalizationsProvider = new JsonLocalizationsProvider();
-    });
+    .AddHttpApplicationCommands();
 
 var app = builder.Build();
 
