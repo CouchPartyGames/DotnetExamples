@@ -3,8 +3,6 @@
 #:package AspNetCore.HealthChecks.UI@9.0.0
 #:package AspNetCore.HealthChecks.UI.InMemory.Storage@9.0.0
 
-//using Microsoft.Extensions.DependencyInjection;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
 // Register Health Check UI

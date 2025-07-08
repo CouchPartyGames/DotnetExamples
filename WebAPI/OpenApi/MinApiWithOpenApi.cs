@@ -12,9 +12,34 @@ var app = builder.Build();
     // http://localhost:5000/openapi/v1.json
 app.MapOpenApi();
 
-app.MapGet("/", () => "Hello World");
+app.MapGet("/", () => "Hello World")
+    .WithTags("Template")
+    .WithSummary("Update Template")
+    .WithDescription("Update a Tournament Template")
+    .WithOpenApi();
+
 app.MapPost("/", () => "Hello World");
-app.MapPut("/", () => "Hello World");
-app.MapDelete("/", () => "Hello World");
-app.MapPatch("/", () => "Hello World");
+    .WithTags("Template")
+    .WithSummary("Update Template")
+    .WithDescription("Update a Tournament Template")
+    .WithOpenApi();
+
+app.MapPut("/", () => "Hello World")
+    .WithTags("Template")
+    .WithSummary("Update Template")
+    .WithDescription("Update a Tournament Template")
+    .WithOpenApi();
+
+app.MapDelete("/", () => "Hello World")
+    .WithTags("Template")
+    .WithSummary("Update Template")
+    .WithDescription("Update a Tournament Template")
+    .WithOpenApi();
+
+app.MapPatch("/", () => "Hello World")
+    .WithTags("Template")
+    .WithSummary("Update Template")
+    .WithDescription("Update a Tournament Template")
+    .WithOpenApi();
+
 app.Run();
