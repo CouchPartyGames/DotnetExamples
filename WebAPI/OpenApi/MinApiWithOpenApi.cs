@@ -1,6 +1,7 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.OpenApi@9.0.*
+#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
+#:package Microsoft.Extensions.ApiDescription.Server@10.0.0-preview*
 
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-9.0
 var builder = WebApplication.CreateBuilder(args);

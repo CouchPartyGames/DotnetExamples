@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet 
 #:package Google.Apis.YouTubeAnalytics.v2@1.68.*
 
 // https://github.com/googleapis/google-api-dotnet-client

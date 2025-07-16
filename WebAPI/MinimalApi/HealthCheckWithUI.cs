@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package AspNetCore.HealthChecks.UI@9.0.0
 #:package AspNetCore.HealthChecks.UI.InMemory.Storage@9.0.0

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run -c Debug
+#!/usr/bin/env dotnet
 #:package Microsoft.Extensions.Hosting@9.0.*
 #:package NetCord@1.0.0-alpha.391
 #:package NetCord.Hosting@1.0.0-alpha.391

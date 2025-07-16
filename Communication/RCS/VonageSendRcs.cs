@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:package Vonage@8.0.1
 
 // https://developer.vonage.com/en/messages/code-snippets/rcs/send-text?source=messages&lang=dotnet

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 
 var clientCertificate = X509Certificate2.CreateFromPemFile(pem);
 

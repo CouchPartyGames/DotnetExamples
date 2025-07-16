@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.Sdk.NET.Web
 
 var builder = WebApplication.CreateBuilder();

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:package Microsoft.AspNetCore.SignalR.Client@9.0.*
 
 using Microsoft.AspNetCore.SignalR.Client;

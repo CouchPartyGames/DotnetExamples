@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +11,6 @@ app.UseExceptionHandler();
 
 	// Returns the Problem Details response for (empty) non-successful responses
 app.UseStatusCodePages();
-app.MapGet("/badrequest", () => {
-	return TypedResults.BadRequest("This is a bad request");
-});
+app.MapGet("/badrequest", () => TypedResults.BadRequest());
+app.MapGet("/error", () => TypedResults.InternalServerError());
 app.Run();

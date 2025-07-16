@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Worker
 #:package Microsoft.Extensions.Hosting@9.0.6
 

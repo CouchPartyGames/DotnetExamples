@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:package NetCord@1.0.0-alpha.391
 #:package NetCord.Hosting.AspNetCore@1.0.0-alpha.391
 #:package NetCord.Hosting.Services@1.0.0-alpha.391

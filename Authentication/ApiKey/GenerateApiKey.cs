@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 
 // Purpose: Generate an API Key to used for API Key Authentication
 using System.Security.Cryptography;

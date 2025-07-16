@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.OpenApi@9.0.*
 #:package Scalar.AspNetCore@2.4.22

@@ -1,3 +1,3 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 
 Console.WriteLine("Hello World!");

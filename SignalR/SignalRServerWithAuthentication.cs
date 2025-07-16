@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.SignalR@1.2.0
 #:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*

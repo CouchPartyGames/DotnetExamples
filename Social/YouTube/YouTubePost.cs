@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:package Google.Apis.YouTube.v3@1.69.*
 
 using Google.Apis.Services;

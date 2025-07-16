@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
 // Purpose: Validate User Input on Minimal API
@@ -12,10 +12,12 @@ builder.Services.AddValidation();
 var app = builder.Build();
 
 // curl -v -X POST -data '{"productId":"xyz","name":"jete"}'  http://localhost:5000/products
+// Validate product and name
 app.MapPost("/products",
     ([MinLength(5, ErrorMessage = "Product ID must be 5 characters")] string productId, [Required] string name)
         => TypedResults.Ok(productId));
 
+// Validate the id string
 app.MapGet("/products/{id}", ([MinLength(5, ErrorMessage="Product Id must be 5 characters")] string id) =>
 {
     return TypedResults.Ok($"product: {id}");
@@ -28,15 +30,3 @@ app.MapGet("/no-validation/{id}", ([MinLength(5, ErrorMessage = "Product Id must
 }).DisableValidation();
 
 app.Run();
-
-public record Order([Required] string Name, [Range(1, 100)] int OrderId);
-
-
-// Create a Custom Validation Attribute
-public sealed class SomeAttribute : ValidationAttribute
-{
-    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
-    {
-        return ValidationResult.Success;
-    }
-}

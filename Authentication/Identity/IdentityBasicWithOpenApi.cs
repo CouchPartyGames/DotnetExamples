@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.EntityFrameworkCore.InMemory@9.0.*
 #:package Microsoft.EntityFrameworkCore.Tools@9.0.*

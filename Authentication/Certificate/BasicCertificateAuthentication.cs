@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.Authentication.Certificate@10.0.0-preview*
 
@@ -23,6 +23,7 @@ builder.Services.Configure<KestrelServerOptions>(opts =>
         options.ServerCertificate = new X509Certificate2();
         options.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
         options.CheckCertificateRevocation = false;
+        // Optional but I encourage using the latest TLS protocol
         options.SslProtocols = SslProtocols.Tls13;
     });
 });
@@ -36,13 +37,41 @@ builder.Services.AddAuthentication(CertificateAuthenticationDefaults.Authenticat
         opts.AllowedCertificateTypes = CertificateTypes.All;
         opts.Events = new CertificateAuthenticationEvents
         {
+            // These Events ONLY run if Authorization is setup (AddAuthorization & UseAuthorization)
             OnCertificateValidated = ctx =>
             {
+                if (true)
+                {
+                    var claims = new[]
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, ctx.ClientCertificate.Subject,
+                            ClaimValueTypes.String, ctx.Options.ClaimsIssuer),
+                        new Claim(ClaimTypes.Name, ctx.ClientCertificate.Subject,
+                            ClaimValueTypes.String, ctx.Options.ClaimsIssuer)
+                    };
+                    
+                    context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, ctx.Scheme.Name));
+                    context.Success();
+                }
+                else {
+                    ctx.Fail("Certificate validation failed.");
+                }
+                return Task.CompletedTask;
+            },
+            OnAuthenticationFailed = ctx =>
+            {
+                context.Fail("Failed to authenticate");
                 return Task.CompletedTask;
             }
         };
 
+    })
+    .AddCertificateCache(opts =>
+    {
+        opts.CacheSize = 1024;
+        opts.CacheEntryExpiration = TimeSpan.FromMinutes(5);
     });
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

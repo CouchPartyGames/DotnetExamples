@@ -1,4 +1,4 @@
-#!/usr/bin/env -S dotnet run
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package OpenTelemetry.Extensions.Hosting@1.12.*
 #:package OpenTelemetry.Exporter.Console@1.12.*
