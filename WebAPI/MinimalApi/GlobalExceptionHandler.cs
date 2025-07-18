@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 // Register the global exception handler
+// You can register multiple handlers
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 builder.Services.AddProblemDetails();
 var app = builder.Build();
 
 // Use the global exception handler middleware
 app.UseExceptionHandler();
+
 app.MapGet("/", () => {
 	throw new Exception("This is an unhandled exception in /");
 	return "hello world";
@@ -37,6 +40,6 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
         httpContext.Response.StatusCode = problemDetails.Status.Value;
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-        return true;
+        return true;    // return if handled successfully
     }
 }
