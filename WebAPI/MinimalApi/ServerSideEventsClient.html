@@ -21,13 +21,13 @@
 </style>
 <body>
 
-<h1>Khalid's Fast-Food Fair</h1>
-<ul id="orders">
+<h1>Heartbeat Monitor</h1>
+<ul id="beats">
 </ul>
 
 <script>
     const eventSource = new EventSource('http://localhost:5000/heartrate-string');
-    const angelsList = document.getElementById('orders');
+    const angelsList = document.getElementById('beats');
 
     eventSource.addEventListener('heartrate', event => {
         const li = document.createElement('li');

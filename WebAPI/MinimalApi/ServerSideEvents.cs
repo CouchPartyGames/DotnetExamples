@@ -6,7 +6,20 @@ using System.Net.ServerSentEvents;
 
 // .NET 10 added support for SSE (Server Side Events)
 var builder = WebApplication.CreateBuilder(args);
+
+// Register Cors Policies
+builder.Services.AddCors(opts =>
+{
+    opts.AddPolicy("everything-open", corsOpts =>
+    {
+        corsOpts
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
+app.UseCors("everything-open");
 app.MapGet("/heartrate-string", (CancellationToken token) =>
 {
     async IAsyncEnumerable<string> GetHeartRate(
