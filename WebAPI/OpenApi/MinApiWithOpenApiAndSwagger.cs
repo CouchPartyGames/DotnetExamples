@@ -12,6 +12,8 @@ var app = builder.Build();
 app.MapOpenApi();
 app.UseSwaggerUI(opts =>
 {
+    // Swagger UI
+    // http://localhost:5000/swagger/
     opts.SwaggerEndpoint("/openapi/v1.json", "My API V1");
 });
 

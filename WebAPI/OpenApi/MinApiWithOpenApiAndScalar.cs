@@ -17,9 +17,10 @@ app.MapOpenApi();
     // http://localhost:5000/scalar/v1
 app.MapScalarApiReference();
 
-app.MapGet("/", () => "Hello World");
-app.MapPost("/", () => "Hello World");
-app.MapPut("/", () => "Hello World");
-app.MapDelete("/", () => "Hello World");
-app.MapPatch("/", () => "Hello World");
+app.MapGet("/", () => Results.Redirect("/scalar"))
+    .Produces(302);
+app.MapPost("/v1", () => "Hello World");
+app.MapPut("/v1", () => "Hello World");
+app.MapDelete("/v1", () => "Hello World");
+app.MapPatch("/v1", () => "Hello World");
 app.Run();
