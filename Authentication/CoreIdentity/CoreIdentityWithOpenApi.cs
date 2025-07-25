@@ -4,6 +4,8 @@
 #:package Microsoft.EntityFrameworkCore.InMemory@9.*
 #:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
 #:package Scalar.AspNetCore@2.4.22
+#:property PublishAot=false     
+// Must disable AOT
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(

@@ -1,5 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
+#:property PublishAot=false     
+// Must disable AOT
 
 using System.Runtime.CompilerServices;
 using System.Net.ServerSentEvents;
