@@ -9,8 +9,4 @@ using (var generator = RandomNumberGenerator.Create())
     generator.GetBytes(key);
 string apiKey = Convert.ToBase64String(key);
 
-
-// Another Option is using GUID
-var apiKey2 = Guid.CreateVersion7();
-
 Console.WriteLine($"New Api Key (base64): {apiKey}");
