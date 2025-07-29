@@ -10,3 +10,8 @@ builder.Services.AddAuthorization(options =>
     options.InvokeHandlersAfterFailure = false;
 });
 var app = builder.Build();
+
+// Note: Authentication middleware must come before Authorization middleware
+app.UseAuthentication();
+app.UseAuthorization();
+app.Run();

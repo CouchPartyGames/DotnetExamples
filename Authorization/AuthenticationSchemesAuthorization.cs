@@ -1,7 +1,9 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-// Authorization in Minimal API 
+// Authorization using Authentication Schemes in Minimal API 
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
@@ -16,4 +18,6 @@ app.UseAuthorization();
 app.MapGet("/", () => "Hello World");
 app.MapGet("/auth", () => "Hello World")
     .RequireAuthorization();
+
+app.MapGet("/protected", [Authorize(AuthenticationSchemes = "JwtBearer,Cookie")] () => "protected");
 app.Run();
