@@ -4,22 +4,32 @@ using System.Security.Cryptography.X509Certificates;
 
 try
 {
-    var clientCertificate = X509Certificate2.CreateFromPemFile("./certificate.pem", "./private.key.pem");
+    var clientCertificate = X509Certificate2.CreateFromPemFile("./client.certificate.pem", "./client.private.key.pem");
     
-        // Add Certificate to Request
     var handler = new HttpClientHandler();
-    handler.ClientCertificates.Add(clientCertificate);
+    handler.ClientCertificates.Add(clientCertificate); 
+    handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+    /*handler.ServerCertificateCustomValidationCallback = 
+        (httpRequestMessage, cert, cetChain, policyErrors) =>
+        {
+            //httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            
+            return true;
+        };*/
     
-    HttpClient client = new HttpClient(handler);
-    HttpResponseMessage response = await client.GetAsync("https://example.com:5001/protected");
+    using HttpClient client = new HttpClient(handler);
+    client.BaseAddress = new Uri("https://example.com:5001/");
+    HttpResponseMessage response = await client.GetAsync("protected");
     if (response.IsSuccessStatusCode)
     {
         string responseBody = await response.Content.ReadAsStringAsync();
         Console.WriteLine(responseBody);
-    } else {
+    } 
+    else
+    {
+        Console.WriteLine($"Failed: {response.StatusCode}");
 		Console.WriteLine("Failed Request");
 	}
-    
 }
 catch(Exception exception)
 {
