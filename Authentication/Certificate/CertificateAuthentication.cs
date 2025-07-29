@@ -12,21 +12,41 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3;
+        listenOptions.UseHttps();
+    });
+    options.ConfigureHttpsDefaults(listenOptions =>
+    {
+        listenOptions.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
+        listenOptions.SslProtocols = SslProtocols.Tls13;
+    });
+});
+
+
 // Configure Kestrel for Client Certificates
+/*
 builder.Services.Configure<KestrelServerOptions>(opts =>
 {
     opts.ConfigureHttpsDefaults(options =>
     {
-        options.ServerCertificate = new X509Certificate2();
+            // Kestrel controls client certificate negotiation
         options.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+        
         options.CheckCertificateRevocation = false;
         // Optional but I encourage using the latest TLS protocol
         options.SslProtocols = SslProtocols.Tls13;
     });
 });
+*/
 
 
 builder.Services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
@@ -50,8 +70,8 @@ builder.Services.AddAuthentication(CertificateAuthenticationDefaults.Authenticat
                             ClaimValueTypes.String, ctx.Options.ClaimsIssuer)
                     };
                     
-                    context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, ctx.Scheme.Name));
-                    context.Success();
+                    ctx.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, ctx.Scheme.Name));
+                    ctx.Success();
                 }
                 else {
                     ctx.Fail("Certificate validation failed.");
@@ -60,7 +80,7 @@ builder.Services.AddAuthentication(CertificateAuthenticationDefaults.Authenticat
             },
             OnAuthenticationFailed = ctx =>
             {
-                context.Fail("Failed to authenticate");
+                ctx.Fail("Failed to authenticate");
                 return Task.CompletedTask;
             }
         };
