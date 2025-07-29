@@ -1,7 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-// Authorization in Minimal API
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization(opts =>
@@ -20,9 +19,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapGet("/", () => "Hello World");
-
 app.MapGet("/resource", (IAuthorizationService authorizationService) =>
 {
     var authorizationResult = await authorizationService.AuthorizeAsync(
@@ -39,8 +36,9 @@ app.MapGet("/resource", (IAuthorizationService authorizationService) =>
 });
 app.Run();
 
+public sealed class SameUserRequirement : IAuthorizationRequirement;
 
-public sealed class DocumentAuthorizationHandler : AuthorizationHandler<>
+public sealed class DocumentAuthorizationHandler : AuthorizationHandler<SameUserRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
         SameUserRequirement requirement,
@@ -54,8 +52,6 @@ public sealed class DocumentAuthorizationHandler : AuthorizationHandler<>
         return Task.CompletedTask;
     }
 }
-
-public sealed class SameUserRequirement : IAuthorizationRequirement;
 
 public static class AuthorizationConsts
 {

@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
 
-// Requires .NET 8 or higher
+// Exception Handling was introduced in .NET 8 
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
