@@ -4,6 +4,7 @@
 #:package Microsoft.Extensions.ApiDescription.Server@10.0.0-preview*
 
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-9.0
+// Note: OpenAPI works with AOT
 var builder = WebApplication.CreateBuilder(args);
 
     // Inject OpenAPI
