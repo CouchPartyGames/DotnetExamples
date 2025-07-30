@@ -72,12 +72,12 @@ public sealed class EmailSenderService : IEmailSender
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
         var message = new MimeMessage();
-        message.Subject = ".NET Core Identity Sample with Email Sender";
-        message.To.Add(new MailboxAddress ("Some User", "user@domain.com"));
+        message.Subject = subject;
+        message.To.Add(new MailboxAddress (null, email));
         message.From.Add(new MailboxAddress ("Other User", "other@domain.com"));
-        message.Body = new TextPart("plain")
+        message.Body = new TextPart("html")
         {
-            Text = "hi"
+            Text = htmlMessage
         };
         
         using var client = new SmtpClient();
