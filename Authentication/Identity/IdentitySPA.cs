@@ -10,8 +10,8 @@
 
 // Simple Example of using .NET Core Identity for Single Page Application (SPA
 //
+// Add Logout Functionality since Core Identity doesn't provide it.
 // Notice: Disable AOT for Scalar to properly render OpenAPI endpoints
-// Notice: You don't have to inject Authentication dependencies
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +28,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddOpenApi();
 
@@ -44,6 +45,15 @@ app.MapIdentityApi<IdentityUser>();
 
 app.MapGet("/", () => Results.Redirect("/scalar"))
     .Produces(302);
+
+    // Step - Add Logout
+    // But is this really necessary/depends
+app.MapPost("/logout", async(SignInManager<IdentityUser> manager) =>
+{
+    await manager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization();
+
 app.Run();
 
 public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
