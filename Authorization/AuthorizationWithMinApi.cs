@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-// Minimal API
+// Simple Example of using Authorization with Minimal API
 //
 // Examples of Authorization using Minimal API
 // Examples of using Multiple Policies on an Endpoint
@@ -12,7 +12,7 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 var app = builder.Build();
 
-// Note: Authentication middleware must come before Authorization middleware
+// Requirement: Authentication middleware must come before Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 

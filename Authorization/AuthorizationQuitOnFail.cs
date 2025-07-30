@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization(options =>
 {
+    // Step - Tell Controllers
     options.InvokeHandlersAfterFailure = false;
 });
 var app = builder.Build();
