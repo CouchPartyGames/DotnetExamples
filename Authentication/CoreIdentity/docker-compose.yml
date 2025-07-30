@@ -1,0 +1,8 @@
+# https://github.com/mailhog/MailHog
+
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "587:1025" # SMTP server
+      - "8025:8025" # Web UI

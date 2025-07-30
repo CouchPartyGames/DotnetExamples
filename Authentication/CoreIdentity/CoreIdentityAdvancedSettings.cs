@@ -44,6 +44,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Add Identity Endpoints
+app.MapIdentityApi<IdentityUser>();
+
 app.MapGet("/", () => "Hello World!");
 app.MapGet("/protected", () => "Protected")
     .RequireAuthorization();
