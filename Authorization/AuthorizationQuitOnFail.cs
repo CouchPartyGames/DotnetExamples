@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization(options =>
 {
-    // Step - Tell Controllers
+    // Step - Tell Middleware not run other middleware after encountering an Authorization Failure
     options.InvokeHandlersAfterFailure = false;
 });
 var app = builder.Build();

@@ -20,20 +20,20 @@ app.UseAuthorization();
 app.MapGet("/", () => "Hello World");
 
 // Explicitly tell the endpoint to allow anyone
-app.MapGet("/allow-anyone", () => "Allow Anyone")
+app.MapGet("/allow-anyone", () => "Allow Anyone using AllowAnonymous()");
     .AllowAnonymous();
 
 // This example uses attributes to allow anonymous access to the endpoint
-app.MapGet("/login", [AllowAnonymous] () => "This endpoint is for all roles.");
+app.MapGet("/login", [AllowAnonymous] () => "Allow anyone using [AllowAnonymous] attribute");
 
 // Tell the endpoint that only authenticated user are allowed
-app.MapGet("/auth", () => "Hello World")
+app.MapGet("/auth", () => "Protected using RequireAuthorization()")
     .RequireAuthorization();
 
 
 // This example uses attributes to protect the endpoint, only an authenticated user is allowed 
 //  to access this resource.
-app.MapGet("/protected", [Authorize] () => "Protected");
+app.MapGet("/protected", [Authorize] () => "Protected using [Authorize] attribute");
 
 
 app.MapGet("/protected-multi-policies", () => "Protected Multi-Policies")

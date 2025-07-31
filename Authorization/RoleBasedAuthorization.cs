@@ -4,7 +4,11 @@
 // Authorization in Minimal API
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("ElevatedRights", policy =>
+        policy.RequireRole("Admin", "BackupUser"));
+});
 var app = builder.Build();
 
 // Note: Authentication middleware must come before Authorization middleware

@@ -23,6 +23,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World");
+
+// Step - Inject AuthorizationService
+// Note: RequireAuthorization() or Authorize is NOT required for this
 app.MapGet("/resource", (IAuthorizationService authorizationService) =>
 {
         // Step - Verifies Rules to allow/deny access to resource
