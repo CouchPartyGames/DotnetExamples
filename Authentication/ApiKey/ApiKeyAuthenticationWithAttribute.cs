@@ -1,5 +1,6 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
+#:property PublishAot=false
 
 // API Key Authentication for MVC
 // Uses Service Filter Attribute to protect specific endpoints
@@ -9,9 +10,11 @@ using System.Text;
 using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 builder.Services.AddSingleton<ApiKeyAuthorizationFilter>();
 var app = builder.Build();
 app.UseRouting();
+app.MapControllers();
 app.Run();
 
 
@@ -37,7 +40,7 @@ public sealed class ApiKeyAuthorizationFilter : IAuthorizationFilter
         // For multi tenant, you can use the database
         string secretApiKey = "SECRET-API-KEY";
 
-        if (!IsMatchingAndPreventTimingAttack(apiKey, secretApiKey))
+        if (!IsMatchingAndPreventTimingAttack(apiKey!, secretApiKey))
         {
             context.Result = new UnauthorizedResult();
         }
@@ -63,5 +66,4 @@ public sealed class ApiKeyAuthorizationFilter : IAuthorizationFilter
 [ApiController]
 public sealed class HomeController : ControllerBase
 {
-    
 }

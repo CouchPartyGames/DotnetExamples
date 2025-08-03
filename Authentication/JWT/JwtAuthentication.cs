@@ -19,17 +19,21 @@ app.MapGet("/", () =>
     return Results.Content("<h1>Hello World!</h1><a href=/login>Login</a>&nbsp;<a href=/protected>Protected Page</a>",
         "text/html");
 });
-app.MapGet("/login", (HttpContext ctx) =>
+app.MapGet("/login", async (HttpContext ctx) =>
 {
-    ctx.SignInAsync(new ClaimsPrincipal(new []
+    await ctx.SignInAsync(new ClaimsPrincipal(new []
     {
         new ClaimsIdentity([
             new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Email, "test@test.com"),
-        ])
+        ], CertificateJwtBearerDefaults.AuthenticationScheme)
     }));
-    
     return Results.Text("You have logged in and received a cookie");
+});
+app.MapGet("/signout", await (HttpContext ctx) =>
+{
+    // Right now, this pointless
+    // In future, you could implement a blacklist to avoid a signed out jwt from being reused
 });
 app.MapGet("/protected", () => "Secret")
     .RequireAuthorization();

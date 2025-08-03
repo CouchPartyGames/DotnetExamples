@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-// Github OAuth Authentication (Doesn't support OIDC)
+// Github OAuth Authentication 
 using Microsoft.AspNetCore.Authentication;
 using System;
 

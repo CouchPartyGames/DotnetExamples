@@ -2,36 +2,48 @@
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.Authentication.OpenIdConnect@10.0.0-preview*
 
+// Supabase Authentication
+//
+//
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;     // necessary for AddOpenConnectId
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(opts =>
     {
         opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        opts.DefaultChallengeScheme = "Supabase";
+        opts.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
     })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opts =>
+    .AddCookie()
+    .AddOpenIdConnect(opts =>
     {
-        opts.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-        opts.Cookie.IsEssential = true;
-    })
-    .AddOpenIdConnect("Supabase", opts =>
-    {
-        opts.ClientId = Environment.GetEnvironmentVariable("SUPABASE_CLIENT_ID");
-        opts.ClientSecret = Environment.GetEnvironmentVariable("SUPABASE_CLIENT_SECRET");
-        
-
+        opts.ClientId = builder.Configuration["Supabase:ClientId"];
+        opts.ClientSecret = builder.Configuration["Supabase:ClientSecret"];
     });
-    
-    
     
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!");
-app.MapGet("/protected", () => "Secret").RequireAuthorization();
+app.MapGet("/user", (HttpContext ctx) =>
+{
+    return string.Join(", ", ctx.User.Claims.Select(x => new { x.Type, x.Value }).ToList() );
+}).RequireAuthorization();
+app.MapGet("/logout", async (HttpContext ctx) =>
+{
+    await ctx.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    await ctx.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+}).RequireAuthentication();
+
 app.Run();
+
+
+public sealed class SupabaseOptions
+{
+    public const string Section = "supabase";
+    public required string ClientId { get; set; }
+    public required string ClientSecret { get; set; }
+}

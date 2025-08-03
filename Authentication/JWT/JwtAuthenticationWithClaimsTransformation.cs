@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
     .AddJwtBearer();
+
+    // Add Claims Transformation to Dependency Injection
 builder.Services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
 
 var app = builder.Build();
@@ -43,7 +45,7 @@ app.MapGet("/user", (ClaimsPrincipal principal) =>
 app.Run();
 
 
-// Add Claims Transformation 
+// Step - Add Claims Transformation 
 // Note: This process runs every single request
 public sealed class CustomClaimsTransformation : IClaimsTransformation
 {
@@ -55,10 +57,10 @@ public sealed class CustomClaimsTransformation : IClaimsTransformation
         }
         
             // Add to Principal
-        var identity = new ClaimsIdentity();
-        //identity.AddClaim(new Claim('SomeClaim', 'SomeClaimValue'));
-        principal.AddIdentity(identity);
-        
+        principal.AddIdentity(new ClaimsIdentity([ 
+            new Claim("Role", "Tester"),
+            new Claim("Department", "QA")
+        ]));
         return Task.FromResult(principal);
     }
 }

@@ -33,8 +33,8 @@ public sealed class ApiKeyMiddleware(RequestDelegate next)
 		}
 		
 		// From Secrets Manager or Database
-		var apiKey = "typically-pulled-from-the-database";
-		if (!IsMatchingAndPreventTimingAttack(apiKey, userApiKey)) {
+		var secretApiKey = "typically-pulled-from-the-database";
+		if (!IsMatchingAndPreventTimingAttack(seretApiKey, userApiKey)) {
 			context.Response.StatusCode = StatusCodes.Status401Unauthorized;
 			await context.Response.WriteAsync("Unauthorized client.");
 			return;
@@ -53,6 +53,6 @@ public sealed class ApiKeyMiddleware(RequestDelegate next)
 		ReadOnlySpan<byte> firstSpan = Encoding.UTF8.GetBytes(first);
 		ReadOnlySpan<byte> secondSpan = Encoding.UTF8.GetBytes(second);
 		
-		return CryptographicOperations.FixedTimeEquals(firstSpan, secondSpan);
+		reateCreat
 	}
 }

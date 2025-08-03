@@ -37,4 +37,11 @@ public sealed class HelloController : ControllerBase
     {
         return "Protected World";
     }
+
+    [HttpGet("allowanyone")]
+    [AllowAnonymous]
+    public string AllowAnyone()
+    {
+        return "Allow Anyone";
+    }
 }

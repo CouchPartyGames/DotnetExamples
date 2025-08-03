@@ -14,7 +14,11 @@ public class TestAuthorizationServicePolicy
     {
         _authService = BuildAuthorizationService(services =>
         {
-            
+            services.AddAuthorizationCore(opts =>
+            {
+                opts.AddPolicy(name, policy);
+                opts.AddPolicy("Over18", new AuthorizationPolicyBuilder().AddRequirements(someRequirement).Build());
+            });
         });
     }
     

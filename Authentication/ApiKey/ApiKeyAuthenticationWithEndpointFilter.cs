@@ -55,7 +55,7 @@ public sealed class ApiKeyEndpointFilterAuthentication : IEndpointFilter
         string secretKey = "replace-me";
         
         // Compare API Keys to ensure they match
-        if (!IsMatchingAndPreventTimingAttack(userApiKey, secretKey))
+        if (!IsMatchingAndPreventTimingAttack(userApiKey!, secretKey))
         {
             return Results.Unauthorized();
         }

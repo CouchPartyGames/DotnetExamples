@@ -1,7 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*
-#:property UserSecretsId dotnet-examples
 
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -29,6 +28,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/", () => "Hello World!");
 app.MapGet("/user", (ClaimsPrincipal principal) =>
 {
 	var claims = principal.Claims.ToDictionary(c => c.Type, c => c.Value);

@@ -26,6 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         opts.Cookie.Name = ".Secure.Cookie";
         
         opts.Cookie.IsEssential = true;
+        
     });
 
 var app = builder.Build();

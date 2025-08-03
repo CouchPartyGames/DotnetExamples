@@ -1,6 +1,7 @@
-namespace DefaultNamespace;
+#!/usr/bin/env dotnet
 
-public class SteamAuthentication
-{
-    
-}
+
+
+// Community Authentication
+// 
+// https://learn.microsoft.com/en-us/aspnet/core/security/authentication/community?view=aspnetcore-9.0
