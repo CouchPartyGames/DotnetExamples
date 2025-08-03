@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie( opts =>
+    .AddCookie(opts =>
     {
         opts.Cookie.IsEssential = true;
     });

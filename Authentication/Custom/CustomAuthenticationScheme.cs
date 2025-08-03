@@ -1,8 +1,8 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-
-// https://github.com/loresoft/AspNetCore.SecurityKey
+// Example of a Custom Authentication Scheme
+//
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
@@ -10,52 +10,57 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication()
-    .AddCustom();
+    .AddCustom("MyCustomScheme", opts =>
+    {
+        opts.Name = "hello";
+    });
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGet("/", () => "Hello World!");
 app.Run();
 
 
+// Step - Defaults 
 public static class CustomAuthenticationDefaults
 {
     public const string AuthenticationScheme = "Custom";
 }
 
-public static class AuthenticationBuilderExtensions {
+// Step - Extension of Authentication Injection
+public static class CustomAuthenticationExtensions
+{
+
+    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder) => 
+        builder.AddCustom(CustomAuthenticationDefaults.AuthenticationScheme, null, _  => {});
+    
     public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder,
-        Action<CustomAuthenticationOptions>? options, string? authenticationScheme)
+        Action<CustomAuthenticationOptions> options) =>
+            builder.AddCustom(CustomAuthenticationDefaults.AuthenticationScheme, null, options);
+    
+    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder, string? authenticationScheme, 
+        Action<CustomAuthenticationOptions>? options) => 
+            builder.AddCustom(CustomAuthenticationDefaults.AuthenticationScheme, null, options);
+
+    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder, string authenticationScheme, 
+        string? displayName, 
+        Action<CustomAuthenticationOptions> configureOptions)
     {
-        var scheme = authenticationScheme ?? CustomAuthenticationDefaults.AuthenticationScheme;
-        var displayName = authenticationScheme ?? CustomAuthenticationDefaults.AuthenticationScheme;
         return builder.AddScheme<CustomAuthenticationOptions, CustomAuthenticationHandler>(authenticationScheme, displayName,
-            options);
-    }
-
-    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder,
-        Action<CustomAuthenticationOptions>? options)
-    {
-        var scheme = CustomAuthenticationDefaults.AuthenticationScheme;
-        var displayName = CustomAuthenticationDefaults.AuthenticationScheme;
-        return builder.AddScheme<CustomAuthenticationOptions, CustomAuthenticationHandler>(scheme, displayName,
-            options);
-    }
-
-    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder)
-    {
-        var scheme = CustomAuthenticationDefaults.AuthenticationScheme;
-        var displayName = CustomAuthenticationDefaults.AuthenticationScheme;
-        Action<CustomAuthenticationOptions>? configureOptions = null;
-        return builder.AddScheme<CustomAuthenticationOptions, CustomAuthenticationHandler>(scheme, displayName,
             configureOptions);
     }
 }
 
+// Step - Allow for Customization of the Handler
 // https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions?view=aspnetcore-9.0
-public sealed class CustomAuthenticationOptions : AuthenticationSchemeOptions;
+public sealed class CustomAuthenticationOptions : AuthenticationSchemeOptions
+{
+    public string Name { get; set; }
+}
 
+// Step - Create a Handler
 public sealed class CustomAuthenticationHandler : AuthenticationHandler<CustomAuthenticationOptions>
 {
     public CustomAuthenticationHandler(IOptionsMonitor<CustomAuthenticationOptions> options,

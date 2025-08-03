@@ -50,7 +50,7 @@ app.Run();
 public sealed class KeycloakOptions
 {
     public const string SectionName = "Keycloak";
-    public required string Authority { get; set; }
-    public required string ClientId { get; set; }
-    public required string  ClientSecret { get; set; }
+    public required string Authority { get; init; }
+    public required string ClientId { get; init; }
+    public required string  ClientSecret { get; init; }
 }
