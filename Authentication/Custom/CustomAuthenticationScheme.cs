@@ -25,8 +25,23 @@ public static class CustomAuthenticationDefaults
 }
 
 public static class AuthenticationBuilderExtensions {
-    /*public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder) => 
-        builder.AddCustom(CustomAuthenticationDefaults.AuthenticationScheme);*/
+    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder,
+        Action<CustomAuthenticationOptions>? options, string? authenticationScheme)
+    {
+        var scheme = authenticationScheme ?? CustomAuthenticationDefaults.AuthenticationScheme;
+        var displayName = authenticationScheme ?? CustomAuthenticationDefaults.AuthenticationScheme;
+        return builder.AddScheme<CustomAuthenticationOptions, CustomAuthenticationHandler>(authenticationScheme, displayName,
+            options);
+    }
+
+    public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder,
+        Action<CustomAuthenticationOptions>? options)
+    {
+        var scheme = CustomAuthenticationDefaults.AuthenticationScheme;
+        var displayName = CustomAuthenticationDefaults.AuthenticationScheme;
+        return builder.AddScheme<CustomAuthenticationOptions, CustomAuthenticationHandler>(scheme, displayName,
+            options);
+    }
 
     public static AuthenticationBuilder AddCustom(this AuthenticationBuilder builder)
     {
