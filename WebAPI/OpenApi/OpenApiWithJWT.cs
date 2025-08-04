@@ -1,11 +1,16 @@
-// https://damienbod.com/2024/08/06/implementing-an-asp-net-core-api-with-net-9-and-openapi/
+#!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
+#:package Microsoft.Extensions.ApiDescription.Server@10.0.0-preview*
+#:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*
 
 
+// https://damienbod.com/2024/08/06/implementing-an-asp-net-core-api-with-net-9-and-openapi/
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-9.0
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.OpenApi;
+using Microsoft.AspNetCore.Authentication;
 
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
