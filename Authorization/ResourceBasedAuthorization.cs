@@ -1,7 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-//
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 

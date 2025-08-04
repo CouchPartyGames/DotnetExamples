@@ -19,10 +19,8 @@ builder.Services.AddAuthorization(opts =>
     });
     
     // Step - Define another Policy by Name and Requirements
-    opts.AddPolicy("user-policy", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-    });
+    opts.AddPolicy(UserAuthorizationPolicy.UserAllowPolicyName,
+        policy => UserAuthorizationPolicy.GetUserAllowPolicy());
 });
 var app = builder.Build();
 
@@ -42,6 +40,19 @@ app.MapGet("/admin",  () => "Hello Admin")
 // Step - Apply Multiple Policies using Policies Names
 app.MapGet("/multiple-policies",   () => "Hello Admin")
     .RequireAuthorization("admin-policy")
-    .RequireAuthorization("user-policy");
+    .RequireAuthorization(UserAuthorizationPolicy.UserAllowPolicyName);
 
 app.Run();
+
+
+// Step - Define Policy Name and Policy
+//  This is preferred to avoid magic strings and better testability
+public static class UserAuthorizationPolicy
+{
+    public const string UserAllowPolicyName = "UserPolicy";
+
+    public static AuthorizationPolicyBuilder GetUserAllowPolicy() =>
+        new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+}
