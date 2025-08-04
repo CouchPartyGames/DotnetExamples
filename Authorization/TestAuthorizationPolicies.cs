@@ -1,10 +1,23 @@
 #!/usr/bin/env dotnet
+#:sdk Microsoft.NET.Sdk.Web
 #:package TUnit@0.25.21
+
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 using TUnit.Assertions;
 using TUnit.Assertions.Extensions;
 using TUnit.Core;
 
+public static class EmployeeReviewPolicies
+{
+    public const string ReadOnlyPolicyName = "ReadOnlyPolicy";
+
+    public static AuthorizationPolicy GetReadOnlyPolicy() => 
+        new AuthorizationPolicyBuilder()
+            .AddRequirements()
+            .Build();
+}
 
 public class TestAuthorizationServicePolicy 
 {
@@ -27,7 +40,6 @@ public class TestAuthorizationServicePolicy
     {
         var services = new ServiceCollection();
         services.AddLogging();
-        
     }
 
 
@@ -36,6 +48,8 @@ public class TestAuthorizationServicePolicy
     {
         // Arrange
         var principal = new ClaimsPrincipal();
+        var employeeReview = "";
+        var policyName = EmployeeReviewPolicies.ReadOnlyPolicyName;
         
         // Act
         var result = await _authService.AuthorizeAsync(principal, employeeReview, policyName);

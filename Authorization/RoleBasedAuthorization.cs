@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 
-// Authorization in Minimal API
+// Authorization in Minimal API using Roles
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization(opts =>
