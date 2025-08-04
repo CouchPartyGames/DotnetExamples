@@ -3,11 +3,14 @@
 #:package TUnit@0.25.21
 
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 using TUnit.Assertions;
 using TUnit.Assertions.Extensions;
 using TUnit.Core;
 
 
+// Resource Based Authorization
 public record Document(string OwnerId);
 
 public sealed class SameUserRequirement : IAuthorizationRequirement;
@@ -18,7 +21,7 @@ public sealed class DocumentAuthorizationHandler : AuthorizationHandler<SameUser
         SameUserRequirement requirement,
         Document resource)
     {
-        if (context.User.Identity?.Name == resouce.OwnerId)
+        if (context.User.Identity?.Name == resource.OwnerId)
         {
             context.Succeed(requirement);
         }
@@ -27,7 +30,7 @@ public sealed class DocumentAuthorizationHandler : AuthorizationHandler<SameUser
     }
 }
 
-// Create our Main Test 
+// Testing for Resource Based Authorization
 public class TestAuthorizationHandler
 {
     private Document _employeeDocument = new Document("SomeGuid");
@@ -36,21 +39,26 @@ public class TestAuthorizationHandler
     public async Task HandleAsync_ReturnsSucceed_WhereUserIsCreator()
     {
         // Arrange
-        var user = new ClaimsPrincipal([ new ClaimsIdentity(
-            [ new Claim(),
-            new Claim()]
-            ) ]);
+        
+            // Setup User
+        var claims = new List<Claim>() { new Claim(ClaimTypes.Name, "SomeGuid") };
+        var identity = new ClaimsIdentity("Cookie");
+        identity.AddClaims(claims);
+        var user = new ClaimsPrincipal(identity);
 
+            // Setup Context
         var authContext = new AuthorizationHandlerContext(
             new List<IAuthorizationRequirement> { new SameUserRequirement() }, 
             user, 
             _employeeDocument);
         
+            // Setup Handler
+        var sut = new DocumentAuthorizationHandler();
+        
         // Act
-        var sut = new DocumentAuthorizationHandler<SameUserRequirement>();
         await sut.HandleAsync(authContext);
 
         // Assert
-        Assert.True(authContext.HasSucceeded);
+        await Assert.That(authContext.HasSucceeded).IsTrue();
     }
 }

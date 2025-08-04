@@ -9,52 +9,53 @@ using TUnit.Assertions;
 using TUnit.Assertions.Extensions;
 using TUnit.Core;
 
+
+// Create a Policy
+// 
+// It's best to setup name as const and separate policy build to single for easy testing
 public static class EmployeeReviewPolicies
 {
     public const string ReadOnlyPolicyName = "ReadOnlyPolicy";
 
     public static AuthorizationPolicy GetReadOnlyPolicy() => 
         new AuthorizationPolicyBuilder()
-            .AddRequirements()
+            .RequireAuthenticatedUser()
             .Build();
 }
 
+
+// Test a Policy
 public class TestAuthorizationServicePolicy 
 {
-    private readonly IAuthorizationService  _authService;
-
-    public TestAuthorizationServicePolicy()
-    {
-        _authService = BuildAuthorizationService(services =>
-        {
-            services.AddAuthorizationCore(opts =>
-            {
-                opts.AddPolicy(name, policy);
-                opts.AddPolicy("Over18", new AuthorizationPolicyBuilder().AddRequirements(someRequirement).Build());
-            });
-        });
-    }
-    
-    // Helper Method
-    private IAuthorizationService BuilderAuthorizationService()
-    {
-        var services = new ServiceCollection();
-        services.AddLogging();
-    }
-
 
     [Test]
     public async Task AuthorizeAsync_ReturnsSucceed_WhenUserIsCreated()
     {
         // Arrange
-        var principal = new ClaimsPrincipal();
-        var employeeReview = "";
+            // Create Authorization Service
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddAuthorizationCore(opts =>
+        {
+            opts.AddPolicy(EmployeeReviewPolicies.ReadOnlyPolicyName,
+                EmployeeReviewPolicies.GetReadOnlyPolicy());
+        });
+        var provider = services.BuildServiceProvider();
+        var authService = provider.GetRequiredService<IAuthorizationService>();
+        
+            // Setup User
+        var claims = new List<Claim>() { new Claim(ClaimTypes.Name, "SomeGuid") };
+        var identity = new ClaimsIdentity("Cookie");
+        identity.AddClaims(claims);
+        var user = new ClaimsPrincipal(identity);
+
+        string? resource = null;
         var policyName = EmployeeReviewPolicies.ReadOnlyPolicyName;
         
         // Act
-        var result = await _authService.AuthorizeAsync(principal, employeeReview, policyName);
+        var result = await authService.AuthorizeAsync(user, resource, policyName);
 
         // Assert
-        Assert.True(result.Succeed);
+        await Assert.That(result.Succeeded).IsTrue();
     }
 }
