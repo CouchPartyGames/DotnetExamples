@@ -36,7 +36,7 @@ public class TestAuthorizationHandler
     private Document _employeeDocument = new Document("SomeGuid");
     
     [Test]
-    public async Task HandleAsync_ReturnsSucceed_WhereUserIsCreator()
+    public async Task HandleAsync_ReturnsSucceed_WhereUserIsDocumentOwner()
     {
         // Arrange
         

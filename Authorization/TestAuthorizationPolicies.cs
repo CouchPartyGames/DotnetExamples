@@ -29,7 +29,7 @@ public class TestAuthorizationServicePolicy
 {
 
     [Test]
-    public async Task AuthorizeAsync_ReturnsSucceed_WhenUserIsCreated()
+    public async Task AuthorizeAsync_ReturnsSucceed_WhenAuthenticatedUserExists()
     {
         // Arrange
             // Create Authorization Service
