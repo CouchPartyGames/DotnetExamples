@@ -23,12 +23,18 @@ app.UseAuthorization();
 
 
 app.MapGet("/", () => "Hello World");
+
 app.MapGet("/auth", () => "Hello World")
     .RequireAuthorization();
 
 app.MapGet("/protected", 
     [Authorize(AuthenticationSchemes = "JwtBearer,Cookie")] 
     () => "protected");
+
+app.MapGet("/protected",
+    [Authorize(AuthenticationSchemes = "JwtBearer")]
+    [Authorize(AuthenticationSchemes = "Cookie")]
+    () => "protected 2");)
 
 app.MapGet("/cookies-only", () => "cookies-only")
     .RquireAuthorization("OnlyCookies");
