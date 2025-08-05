@@ -1,14 +1,13 @@
 #!/usr/bin/env dotnet
 #:package Microsoft.EntityFrameworkCore@9.0.6
 #:package Npgsql.EntityFrameworkCore.PostgreSQL@9.0.4
-#:property UserSecretsId dotnet-examples
 
 
 using var context = new AppContext();
 context.Add();
 context.SaveChanges();
 
-public class AppContext : DbContext
+public sealed class AppContext : DbContext
 {
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
