@@ -27,7 +27,7 @@ app.MapGet("/allow-anyone", () => "Allow Anyone using AllowAnonymous()");
 app.MapGet("/login", [AllowAnonymous] () => "Allow anyone using [AllowAnonymous] attribute");
 
 // Tell the endpoint that only authenticated user are allowed
-app.MapGet("/auth", () => "Protected using RequireAuthorization()")
+app.MapGet("/auth", () => "Protected usinggi RequireAuthorization()")
     .RequireAuthorization();
 
 
