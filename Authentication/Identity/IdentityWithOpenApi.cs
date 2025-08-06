@@ -36,8 +36,10 @@ builder.Services.ConfigureApplicationCookie(opts => {
 	opts.AccessDeniedPath = "/account/denied";
 });
 builder.Services.AddOpenApi();
+builder.ConfigureMigration();
 
 var app = builder.Build();
+
 
     // Authentication Middleware
 app.UseAuthentication();
@@ -57,4 +59,14 @@ public sealed class AppDbContext : IdentityDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> opts) : base(opts) {}
 
+}
+
+public static class MigrationExtensions
+{
+    public void ConfigureMigration(this IApplicationBuilder app, DataContext dataContext)
+    {
+        // migrate any database changes on startup (includes initial db creation)
+        dataContext.Database.Migrate();
+
+    }
 }

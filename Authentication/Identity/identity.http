@@ -1,5 +1,17 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=JetBrains Rider
+### Register User
+POST http://localhost:5000/register
+Content-Type: application/json
 
-###
+{
+  "email": "test@test.com",
+  "password": "t3St1234_"
+}
+
+### Login User
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "t3St1234_"
+}

@@ -33,6 +33,13 @@ builder.Services.AddEndpointsApiExplorer();
     
 var app = builder.Build();
 
+// Ensure database and tables are created
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+}
+
 // Ensure Authorization/Authorization Middleware
 app.UseAuthentication();
 app.UseAuthorization();
