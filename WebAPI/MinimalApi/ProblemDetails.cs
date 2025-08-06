@@ -11,6 +11,7 @@ app.UseExceptionHandler();
 
 	// Returns the Problem Details response for (empty) non-successful responses
 app.UseStatusCodePages();
+app.MapGet("/", () => "Hello World!");
 app.MapGet("/badrequest", () => TypedResults.BadRequest());
 app.MapGet("/error", () => TypedResults.InternalServerError());
 app.Run();
