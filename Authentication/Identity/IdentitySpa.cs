@@ -1,8 +1,6 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.EntityFrameworkCore.InMemory@9.0.*
-#:package Microsoft.EntityFrameworkCore.Tools@9.0.*
-#:package Microsoft.AspNetCore.Identity@2.3.*
+#:package Microsoft.EntityFrameworkCore.Sqlite@9.*
 #:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.0.*
 #:package Microsoft.AspNetCore.OpenApi@9.0.*
 #:package Scalar.AspNetCore@2.4.22
@@ -22,7 +20,7 @@ var builder = WebApplication.CreateBuilder();
 
     // Step - Setup In Memory Database
 builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseInMemoryDatabase("AppDb"));
+    options => options.UseSqlite("Data Source=identity.sql"));
 
     // Step - Add Identity Endpoints
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()

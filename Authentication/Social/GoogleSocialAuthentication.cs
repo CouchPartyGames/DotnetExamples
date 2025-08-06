@@ -22,8 +22,8 @@ builder.Services.AddAuthentication(opts =>
     .AddCookie()
     .AddGoogle("Google", opts => 
     {
-        opts.ClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
-        opts.ClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
+        opts.ClientId = builder.Configuration["Google:ClientId"];
+        opts.ClientSecret = builder.Configuration["Google:ClientSecret"];
         
         opts.CallbackPath = "/signin-google";
         opts.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -33,6 +33,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization(); // Use authorization middleware
 
+app.MapGet("/",  () => "Google Social Authentication Example!");
 // Define a protected endpoint that requires authentication
 app.MapGet("/protected", (HttpContext context) =>
     {
@@ -40,24 +41,11 @@ app.MapGet("/protected", (HttpContext context) =>
     })
     .RequireAuthorization(); // Requires authenticated user
 
-app.MapGet("/signin-google", async (HttpContext httpContext) =>
+app.MapGet("/logout", async (HttpContext context) =>
 {
-    var info = await httpContext.AuthenticateAsync("Google");
-    if (info.Succeeded)
-    {
-        // User authenticated successfully
-        var user = info.Principal;
-        // You can access claims like name, email, etc. from user.Claims
-
-
-        // If you are storing user information, do so here
-        // You can also redirect the user to another page
-        return Results.Ok("User authenticated successfully");
-    }
-    else
-    {
-        return Results.BadRequest("Authentication failed");
-    }
-});
-
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    //await context.SignOutAsync("Google");
+    
+    return "Signed out";
+}).RequireAuthorization();
 app.Run();
