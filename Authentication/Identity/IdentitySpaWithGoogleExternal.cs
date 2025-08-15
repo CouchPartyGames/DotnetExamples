@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder();
 
@@ -69,6 +70,8 @@ app.MapGet("/register/google/callback", async Task<IResult> (HttpContext context
     Console.WriteLine($"User Identity: {context.User?.Identity?.Name ?? "null"}");
     Console.WriteLine($"User IsAuthenticated: {context.User?.Identity?.IsAuthenticated}");
     Console.WriteLine($"Auth Type: {context.User?.Identity?.AuthenticationType ?? "null"}");
+    var authResult = await context.AuthenticateAsync("Google");
+    Console.WriteLine($"Direct Google auth result: Succeeded={authResult.Succeeded}, Failure={authResult.Failure?.Message}");
     
     if (context.User?.Claims != null)                                                                                                                                                                                                                                                        
     {                                                                                                                                                                                                                                                                      
@@ -81,25 +84,18 @@ app.MapGet("/register/google/callback", async Task<IResult> (HttpContext context
     {                                                                                                                                                                                                                                                                                  
           Console.WriteLine("No claims found");                                                                                                                                                                                                                                                
     }
-    var authResult = await context.AuthenticateAsync("Google");
-    Console.WriteLine($"Direct Google auth result: Succeeded={authResult.Succeeded}, Failure={authResult.Failure?.Message}");
     
     /*  THESE DOESN'T WORK CURRENTLY
     var externalInfo = await signInManager.GetExternalLoginInfoAsync();
     Console.WriteLine($"External Info: {externalInfo?.ToString() ?? "null"}");
-    
     if (externalInfo is null)
     {
-        Console.WriteLine("ERROR: External login info is null");
-        
-        // Try to get authentication result directly
         return TypedResults.InternalServerError("Failed to load external login information.");
     }
-
     //Console.WriteLine(externalInfo);
     */
 
-    var providerKey = context.User.Claims.FirstOrDefault(c => c.Type == ClaimsTypes.NameIdentifier)?.Value;
+    var providerKey = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     var externalInfo = new UserLoginInfo("Google", "Google", providerKey);
     var user = new IdentityUser { UserName = externalInfo.ProviderKey, Email = externalInfo.ProviderKey };
 
