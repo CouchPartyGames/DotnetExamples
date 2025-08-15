@@ -24,7 +24,7 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder();
 
-    // Step - Setup In Memory Database
+    // Step - Setup SQLite Database
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlite("Data Source=identity.sql"));
 

@@ -33,8 +33,6 @@ builder.Services.AddAuthentication(opts =>
     {
         opts.ClientId = builder.Configuration["Google:ClientId"];
         opts.ClientSecret = builder.Configuration["Google:ClientSecret"];
-        
-        //opts.MapInboundClaims = false;
     });
 
 builder.Services.AddAuthorization();
@@ -44,9 +42,24 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/", () =>
+{
+    return Results.Content("<a href=/register/google>Register</a> <a href=/login/google>Login</a> <a href=/logout>Logout</a> <a href=/me>Me</a>", "text/html");
+});
+
+app.MapGet("/me", (HttpContext context) =>
+{
+    var html = "<h2>Claims</h2><table><tr><th>Key</th><th>Value</th></tr>";
+    foreach (var claim in context.User.Claims)
+    {
+        html += $"<tr><td>{claim.Type}</td><td>{claim.Value}</td></tr>";
+    }
+    html += "</table>";
+    return Results.Content(html, "text/html");
+}).RequireAuthorization();
+
 // Register
 app.MapGet("/register/google", (SignInManager<IdentityUser> signInManager,
-    LinkGenerator linkGenerator,
     HttpContext context) =>
 {
     var properties = LoginUtilities.NewSettings("Google", LoginUtilities.RegisterAction);
@@ -63,53 +76,38 @@ app.MapGet("/register/google/callback", async Task<IResult> (HttpContext context
 {
     var signInManager = context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
     var userManager = context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
-
-    Console.WriteLine("=== Debug External Login Callback ===");
-    Console.WriteLine($"Request URL: {context.Request.GetDisplayUrl()}");
-    Console.WriteLine($"Request Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
-    Console.WriteLine($"User Identity: {context.User?.Identity?.Name ?? "null"}");
-    Console.WriteLine($"User IsAuthenticated: {context.User?.Identity?.IsAuthenticated}");
-    Console.WriteLine($"Auth Type: {context.User?.Identity?.AuthenticationType ?? "null"}");
-    var authResult = await context.AuthenticateAsync("Google");
-    Console.WriteLine($"Direct Google auth result: Succeeded={authResult.Succeeded}, Failure={authResult.Failure?.Message}");
     
-    if (context.User?.Claims != null)                                                                                                                                                                                                                                                        
-    {                                                                                                                                                                                                                                                                      
-          foreach (var claim in context.User.Claims)                                                                                                                                                                                                                         
-          {                                                                                                                                                                                                                                                                              
-              Console.WriteLine($"Type: {claim.Type}, Value: {claim.Value}");                                                                                                                                                                                                                          
-          }                                                                                                                                                                                                                                                                                          
-    }                                                                                                                                                                                                                                                                                       
-    else                                                                                                                                                                                                                                                                                    
-    {                                                                                                                                                                                                                                                                                  
-          Console.WriteLine("No claims found");                                                                                                                                                                                                                                                
-    }
-    
-    /*  THESE DOESN'T WORK CURRENTLY
-    var externalInfo = await signInManager.GetExternalLoginInfoAsync();
-    Console.WriteLine($"External Info: {externalInfo?.ToString() ?? "null"}");
-    if (externalInfo is null)
-    {
-        return TypedResults.InternalServerError("Failed to load external login information.");
-    }
-    //Console.WriteLine(externalInfo);
-    */
-
     var providerKey = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-    var externalInfo = new UserLoginInfo("Google", "Google", providerKey);
-    var user = new IdentityUser { UserName = externalInfo.ProviderKey, Email = externalInfo.ProviderKey };
+    var email = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+    
+        // User and Linked Account Information
+    var externalInfo = new UserLoginInfo("Google", providerKey!, "Google");
+    var user = new IdentityUser { UserName = email, 
+        Email = email, 
+        EmailConfirmed = true };
 
+        // Create User
     var result = await userManager.CreateAsync(user);
+    if (!result.Succeeded)
+    {
+        return TypedResults.InternalServerError();
+    }
+        // Link External to User
     result = await userManager.AddLoginAsync(user, externalInfo);
+    if (!result.Succeeded)
+    {
+        return TypedResults.InternalServerError();
+    }
+    
+        // Signin
     await signInManager.SignInAsync(user, isPersistent: false);
+    
     return TypedResults.Ok("Success");
 }).RequireAuthorization();
 
-/*
+
 // Will Redirect to Google Authentication
-app.MapGet("/login/{provider}", (string provider, 
-    SignInManager<IdentityUser> signInManager, 
-    LinkGenerator linkGenerator,
+app.MapGet("/login/google", (SignInManager<IdentityUser> signInManager, 
     HttpContext context) =>
 {
     var properties = LoginUtilities.NewSettings("Google", LoginUtilities.LoginAction);
@@ -122,39 +120,18 @@ app.MapGet("/login/{provider}", (string provider,
 });
 
 // Will Handle Google Callback
-app.MapGet("/login/google/callback", async (HttpContext context) =>
+app.MapGet("/login/google/callback", async (SignInManager<IdentityUser> signInManager, 
+    HttpContext context) =>
 {
-    var scheme = "Google";
-    var result = await context.AuthenticateAsync(scheme);
-    if (!result.Succeeded)
-    {
-        return Results.Unauthorized();
-    }
-
-    var user = await userManager.FindByEmailAsync();
-    if (!user)
-    {
-            // Create User
-        var email = "";
-        var result = await userManager.CreateAsync(GoogleUser.NewUser(email));
-        if (!result)
-        {
-            
-        }
-    }
-
-        // Add Login
-    var login = GoogleUser.NewLogin();
-    var loginResult = userManager.AddLoginAsync(login);
-    if (!loginResult.Succeeded)
-    {
-        return Results.InternalServerError();
-    }
-    
-    return Results.Redirect();
-
+    var redirectTo = "/me";
+    return Results.Redirect(redirectTo);
 }).WithName("GoogleLoginCallback");
-*/
+
+app.MapGet("/logout", async (HttpContext context) =>
+{
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    return Results.Redirect("/");
+}).RequireAuthorization();
 
 app.Run();
 
@@ -169,23 +146,23 @@ public static class LoginUtilities
 {
     public const string LoginAction = "login";
     public const string RegisterAction = "register";
-
-    public static IdentityUser NewUser(string email) => new IdentityUser
-    {
-        UserName = email,
-        Email = email,
-        EmailConfirmed = true
-    };
     
-    //public static UserLoginInfo NewLogin(string string identity) => new UserLoginInfo(ProviderName, identity, ProviderName);
-
-    //public static UserLoginInfo NewExternalLogin() => new UserLoginInfo();
-    
-    public static AuthSettings NewSettings(string provider, string action) =>
+    public static AuthSettings NewSettings(string provider, string action, string redirectUrl = "http://localhots:3000") =>
         new AuthSettings(
             new List<string> { provider },
             provider,
-            $"http://localhost:5000/{action}/google/callback/?ReturnUrl=http://localhost:3000/");
+            $"http://localhost:5000/{action}/{provider.ToLower()}/callback/?ReturnUrl={redirectUrl}");
+
+    public static string GetIdentityTableHtml(ClaimsPrincipal principal)
+    {
+        var html = "<h2>Claims</h2><table><tr><th>Key</th><th>Value</th></tr>";
+        foreach (var claim in principal.Claims)
+        {
+            html += $"<tr><td>{claim.Type}</td><td>{claim.Value}</td></tr>";
+        }
+        html += "</table>";
+        return html;
+    }
 }
 
 public record AuthSettings(List<string> Schemes, string Provider, string RedirectUrl);
