@@ -1,6 +1,7 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
 
+// Simple Rate Limiting Example using .NET Minimal API
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
