@@ -8,11 +8,15 @@ using ModelContextProtocol.Server;
 using System.ComponentModel;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Step - Register MCP Server
 builder.Services.AddMcpServer()
     .WithHttpTransport()
     .WithTools<TimeTool>();
 
 var app = builder.Build();
+
+// Step - Add MCP
 app.MapMcp();
 app.Run();
 

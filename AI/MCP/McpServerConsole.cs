@@ -3,6 +3,17 @@
 #:package Microsoft.Extensions.Hosting@10.0.0-preview*
 
 // https://github.com/modelcontextprotocol/csharp-sdk/blob/main/README.md
+/*
+  {
+     "servers": {
+       "MyMcpServer": {
+         "type": "stdio",
+         "command": "dotnet",
+         "args": ["run", "C:\\\\path\\\\to\\\\your\\\\mcp-server.cs"]
+       }
+     }
+   }
+ */
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,10 +27,13 @@ builder.Logging.AddConsole(consoleLogOptions =>
     // Configure all logs to go to stderr
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
+
+// Step - Register MCP Server
 builder.Services
     .AddMcpServer()
     .WithStdioServerTransport()
     .WithToolsFromAssembly();
+
 await builder.Build().RunAsync();
 
 [McpServerToolType]
