@@ -20,5 +20,4 @@ app.MapGet("/", () => "Hello World!");
 app.MapGet("/user", [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)] (HttpContext context) =>
     "User ID: " + context.User.Identity?.Name);
 
-
 app.Run();

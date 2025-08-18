@@ -37,11 +37,13 @@ builder.Services.AddAuthentication(opts =>
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapGet("/",  () => "Hello World!");
 app.MapGet("/user", (HttpContext ctx) =>
 {
     return string.Join(", ", ctx.User.Claims.Select(x => new { x.Type, x.Value }).ToList());
 }).RequireAuthorization();
+
 app.MapGet("/logout", async (HttpContext ctx) =>
 {
     await ctx.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
