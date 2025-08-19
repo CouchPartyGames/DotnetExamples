@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
-#:package Microsoft.Extensions.ApiDescription.Server@10.0.0-preview*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
+#:package Microsoft.Extensions.ApiDescription.Server@10.*-*
 
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-9.0
 // Note: OpenAPI works with AOT

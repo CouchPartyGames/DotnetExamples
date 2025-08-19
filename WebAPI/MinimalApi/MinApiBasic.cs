@@ -21,6 +21,11 @@ public static class EndpointExtensions
 {
     public static string AnotherHelloWorld() => "Hello World";
 
+    public static IResults MidTyped()
+    {
+        return IResults.Ok("Expecting IResults");
+    }
+    
     public static Results<Ok<string>, BadRequest> StronglyTyped()
     {
         return TypedResults.Ok("Strongly Typed Example");

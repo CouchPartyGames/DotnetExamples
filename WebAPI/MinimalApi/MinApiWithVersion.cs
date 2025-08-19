@@ -10,10 +10,13 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddApiVersioning(options => {
-        // Default Version
+
+// Step - Register Api Versioning
+builder.Services.AddApiVersioning(options =>
+{
+    // Default Version
     options.DefaultApiVersion = new ApiVersion(1);
-        // Add a Header that sets a header in the response
+    // Add a Header that sets a header in the response
     options.ReportApiVersions = true;
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ApiVersionReader = ApiVersionReader.Combine(
@@ -23,6 +26,8 @@ builder.Services.AddApiVersioning(options => {
 
 var app = builder.Build();
 
+// Step - Create Version Set
+//   This creates versions 1 and 2
 ApiVersionSet apiVersionSet = app.NewApiVersionSet()
     .HasApiVersion(new ApiVersion(1))
     .HasApiVersion(new ApiVersion(2))

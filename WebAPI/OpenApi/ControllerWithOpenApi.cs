@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
 
 // A Simple Hello World example using Controllers
 using Microsoft.AspNetCore.Mvc;

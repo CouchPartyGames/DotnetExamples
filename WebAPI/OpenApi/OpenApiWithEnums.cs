@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
-#:package Microsoft.Extensions.ApiDescription.Server@10.0.0-preview*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
+#:package Microsoft.Extensions.ApiDescription.Server@10.*-*
 #:package Scalar.AspNetCore@2.4.22
 #:property PublishAot=false
 
@@ -62,7 +62,7 @@ public enum DayOfTheWeekAsString
     Saturday
 }
 
-// Step
+// Step - Flags Allows for Bitwise Combinations
 // You can use both integers and strings to set your topping
 // If you send an invalid string, the endpoint will respond w/ status code 400
 // If you send an invalid integer, the endpoint will repond w/ status code 200 and the integer

@@ -7,6 +7,7 @@
 
 // https://damienbod.com/2024/08/06/implementing-an-asp-net-core-api-with-net-9-and-openapi/
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-9.0
+// https://github.com/scalar/scalar/issues/4055
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.AspNetCore.Authentication;
 

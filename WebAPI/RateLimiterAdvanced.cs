@@ -7,12 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRateLimiter(opts =>
 {
     opts.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-    opts.AddFixedWindowLimiter("fixed", cfg =>
-    {
-        cfg.PermitLimit = 5;    // how many requests you can have per window
-        cfg.Window = TimeSpan.FromMinutes(1);   // set the timespan of that window
-    });
-    opts.AddPolicy("per-user", httpContext =>
+    
+    opts.AddPolicy("UserRateLimit", httpContext =>
     {
         // Create User Policy
         string? userId = httpContext.User.FindFirstValue("userId");
@@ -29,7 +25,26 @@ builder.Services.AddRateLimiter(opts =>
             Window = TimeSpan.FromMinutes(1);
         });
     });
+
+    opts.AddPolicy("IpAddressRateLimit", context =>
+    {
+        var ipAddress = context.Connection.RemoteIpAddress?.ToString();
+        
+        //return RateLimiterPartition.Create
+    });
+    
 });
 var app = builder.Build();
 app.MapGet("/", () => "Hello World");
+
+app.MapGet("/by-ip", () =>
+{
+
+}).RequireRateLimiting("IpAddressRateLimit");
+
+app.MapGet("/by-user", () =>
+{
+    
+}).RequireRateLimiting("UserRateLimit");
+
 app.Run();
