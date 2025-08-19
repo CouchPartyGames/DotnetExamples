@@ -5,12 +5,14 @@
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
-// Register Health Check UI
+// Step - Register Health Check UI
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 var app = builder.Build();
-// Add Middleware for Health Check UI
-app.UseHealthChecksUI(config => config.UIPath = "/health-ui");
 app.MapGet("/", () => "Hello World");
+
+// Step - Add Middleware for Health Check UI
+app.UseHealthChecksUI(config => config.UIPath = "/health-ui");
 app.MapHealthChecks("/health");
+
 app.Run();
