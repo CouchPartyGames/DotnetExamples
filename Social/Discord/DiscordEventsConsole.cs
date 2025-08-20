@@ -37,7 +37,7 @@ var host = builder.Build()
 
 await host.RunAsync();
 
-public class MessageCreateHandler(ILogger<MessageCreateHandler> logger) : IMessageCreateGatewayHandler
+public sealed class MessageCreateHandler(ILogger<MessageCreateHandler> logger) : IMessageCreateGatewayHandler
 {
     public ValueTask HandleAsync(Message message)
     {
@@ -46,7 +46,7 @@ public class MessageCreateHandler(ILogger<MessageCreateHandler> logger) : IMessa
     }
 }
 
-public class MessageReactionAddHandler(RestClient client) : IMessageReactionAddGatewayHandler
+public sealed class MessageReactionAddHandler(RestClient client) : IMessageReactionAddGatewayHandler
 {
     public async ValueTask HandleAsync(MessageReactionAddEventArgs args)
     {

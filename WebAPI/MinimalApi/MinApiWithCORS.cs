@@ -23,6 +23,7 @@ builder.Services.AddCors(opts =>
     });
 });
 var app = builder.Build();
+
 // Use Cors Middleware
 app.UseCors("everything-open");
 app.MapGet("/", () => "Hello World");
