@@ -34,6 +34,7 @@ app.Run();
 
 
 // Step - Create Authentication Defaults 
+//  This is not a required step but highly recommended to avoid magic strings
 public static class BasicAuthenticationDefaults
 {
     public const string AuthenticationScheme = "Basic";
@@ -109,12 +110,12 @@ public sealed class BasicAuthenticationHandler : AuthenticationHandler<BasicAuth
         }
         
         
-        var name = Scheme.Name ?? BasicAuthenticationDefaults.AuthenticationScheme;
+        var schemeName = Scheme.Name ?? BasicAuthenticationDefaults.AuthenticationScheme;
         List<Claim> claims = [new Claim(ClaimTypes.NameIdentifier, "Bob"), new Claim(ClaimTypes.Role, "Admin")];
         ClaimsIdentity identity = new(claims, name);
         ClaimsPrincipal principal = new(identity);
 
-        var ticket = new AuthenticationTicket(principal, name);
+        var ticket = new AuthenticationTicket(principal, schemeName);
         return AuthenticateResult.Success(ticket);
     }
 }
