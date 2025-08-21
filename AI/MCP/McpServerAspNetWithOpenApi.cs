@@ -15,6 +15,7 @@ using ModelContextProtocol.Server;
 using System.ComponentModel;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
+using Microsoft.OpenApi.Any;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,10 +84,11 @@ public class McpDocumentTransformer(IHttpContextAccessor accessor) : IOpenApiDoc
                 {
                     Summary = "MCP endpoint",
                     Description = "Returns all pets from the system that the user has access to",
+                    /* error CS0246: The type or namespace name 'OpenApiString' could not be found (are you missing a using directive or an assembly reference?
                     Extensions = new Dictionary<string, IOpenApiExtension>
                     {
                         ["x-ms-agentic-protocol"] = new OpenApiString("mcp-streamable-1.0")
-                    },
+                    }, */
                     OperationId = "InvokeMCP",
                     Responses = new OpenApiResponses
                     {
