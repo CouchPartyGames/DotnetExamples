@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package ModelContextProtocol@0.3.0-preview.*
-#:package ModelContextProtocol.AspNetCore@0.3.0-preview.*
+#:package ModelContextProtocol@0.3.*-*
+#:package ModelContextProtocol.AspNetCore@0.3.*-*
 
 // https://github.com/modelcontextprotocol/csharp-sdk/blob/main/README.md
 using ModelContextProtocol.Server;
