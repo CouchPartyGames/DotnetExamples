@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
 #:package Scalar.AspNetCore@2.4.22
 
 
