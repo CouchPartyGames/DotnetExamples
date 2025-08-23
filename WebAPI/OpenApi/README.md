@@ -148,8 +148,8 @@ OpenAPI is a specification for documenting REST APIs. These examples show how to
 Each example can be run independently:
 
 ```bash
-dotnet run --project ControllerWithOpenApi.cs
-dotnet run --project MinApiWithOpenApi.cs
+dotnet ControllerWithOpenApi.cs
+dotnet MinApiWithOpenApi.cs
 # etc.
 ```
 

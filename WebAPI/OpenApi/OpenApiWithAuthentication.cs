@@ -3,7 +3,7 @@
 #:package Microsoft.AspNetCore.OpenApi@10.*-*
 #:package Microsoft.Extensions.ApiDescription.Server@10.*-*
 #:package Microsoft.AspNetCore.Authentication.JwtBearer@10.*-*
-#:package Scalar.AspNetCore@2.4.2*
+#:package Scalar.AspNetCore@2.7.*
 
 
 // https://damienbod.com/2024/08/06/implementing-an-asp-net-core-api-with-net-9-and-openapi/

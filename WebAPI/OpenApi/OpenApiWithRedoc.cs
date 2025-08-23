@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
-#:package Microsoft.Extensions.ApiDescription.Server@10.0.0-preview*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
+#:package Microsoft.Extensions.ApiDescription.Server@10.*-*
 #:package Swashbuckle.AspNetCore.ReDoc@9.0.*
 #:property PublishAot=false     
 
