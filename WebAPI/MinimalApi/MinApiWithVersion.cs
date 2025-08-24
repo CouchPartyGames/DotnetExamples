@@ -14,11 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Step - Register Api Versioning
 builder.Services.AddApiVersioning(options =>
 {
-    // Default Version
+    // Set Default Version
     options.DefaultApiVersion = new ApiVersion(1);
     // Add a Header that sets a header in the response
     options.ReportApiVersions = true;
+    // When a client doesn't provide a version, tell the api to assume the default version
     options.AssumeDefaultVersionWhenUnspecified = true;
+    
+    // Where to look for the version
     options.ApiVersionReader = ApiVersionReader.Combine(
         new UrlSegmentApiVersionReader(),
         new HeaderApiVersionReader("X-Api-Version"));
@@ -35,14 +38,17 @@ ApiVersionSet apiVersionSet = app.NewApiVersionSet()
     .Build();
 
 
+// Version 1
 app.MapGet("v{version:apiVersion}/hello", () => "Hello World")
     .WithApiVersionSet(apiVersionSet)
     .MapToApiVersion(1);
 
+// Version 2
 app.MapGet("v{version:apiVersion}/hello", () => "Hello World 2")
     .WithApiVersionSet(apiVersionSet)
     .MapToApiVersion(2);
 
+// Mark Deprecated 
 app.MapGet("v{version:apiVersion}/deprecated", () => "This endpoint is deprecated!")
     .WithApiVersionSet(apiVersionSet)
     .MapToApiVersion(1)
