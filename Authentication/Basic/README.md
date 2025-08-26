@@ -1,50 +1,66 @@
 # Basic Authentication Example
 
-This project demonstrates HTTP Basic Authentication implementation in ASP.NET Core.
+This project demonstrates HTTP Basic Authentication implementation in ASP.NET Core with both server and client components.
 
 ## Overview
 
-HTTP Basic Authentication uses an Authorization header to pass credentials to the server:
-- Format: `Authorization: Basic <credentials>`
-- `<credentials>` is base64-encoded `username:password`
-- **Important**: Use HTTPS to secure credentials transmission
+HTTP Basic Authentication passes credentials via the `Authorization` header using the format:
+```
+Authorization: Basic <base64(username:password)>
+```
 
-## Implementation
+**⚠️ Security Note:** Use HTTPS in production to avoid credentials being transmitted in plaintext.
 
-The example includes:
+## Files
 
-### Authentication Setup
-- Custom `BasicAuthenticationHandler` that validates Authorization headers
-- Extension methods for easy service registration
-- Configurable options through `BasicAuthenticationOptions`
+### BasicAuthentication.cs
+A complete ASP.NET Core web server implementing Basic Authentication:
 
-### Key Components
+- **Custom Authentication Handler**: `BasicAuthenticationHandler` processes Basic auth headers
+- **Extension Methods**: Fluent configuration with `AddBasic()` method
+- **Protected Endpoints**: 
+  - `/` - Public endpoint
+  - `/user` - Protected endpoint requiring authentication
+- **Hardcoded Credentials**: `admin:secret` (demo only - use secure credential storage in production)
 
-1. **BasicAuthenticationDefaults** (`BasicAuthentication.cs:38-41`)
-   - Defines default scheme name to avoid magic strings
+Key components:
+- `BasicAuthenticationDefaults` - Constants to avoid magic strings
+- `BasicAuthenticationOptions` - Configuration options
+- `BasicAuthenticationHandler` - Core authentication logic
 
-2. **BasicAuthenticationExtensions** (`BasicAuthentication.cs:44-64`)
-   - Extension methods for service registration
-   - Multiple overloads for flexibility
+### BasicAuthenticationClient.cs
+HTTP client that tests the Basic Authentication server:
 
-3. **BasicAuthenticationOptions** (`BasicAuthentication.cs:68-71`)
-   - Configuration options for the authentication scheme
-
-4. **BasicAuthenticationHandler** (`BasicAuthentication.cs:75-121`)
-   - Core authentication logic
-   - Validates Authorization header format
-   - Decodes base64 credentials
-   - Creates claims and authentication ticket
-
-### Endpoints
-
-- `/` - Public endpoint
-- `/user` - Protected endpoint requiring authentication
+- Tests public endpoint without authentication
+- Tests protected endpoint without authentication (expects 401)
+- Tests with invalid credentials (`testuser:testpass`)
+- Tests with valid credentials (`admin:secret`)
 
 ## Usage
 
-The handler currently accepts any credentials and creates a fixed identity with:
-- NameIdentifier: "Bob"
-- Role: "Admin"
+1. **Run the server:**
+   ```bash
+   dotnet run BasicAuthentication.cs
+   ```
+   Server runs on `http://localhost:5000`
 
-In production, replace the hardcoded authentication logic with actual user validation.
+2. **Run the client:**
+   ```bash
+   dotnet run BasicAuthenticationClient.cs
+   ```
+
+## Authentication Flow
+
+1. Client sends request to protected endpoint
+2. Server checks for `Authorization` header
+3. Server validates "Basic" prefix and decodes base64 credentials
+4. Server validates username:password against stored credentials
+5. On success, creates `ClaimsPrincipal` with user identity and roles
+6. Returns `AuthenticationTicket` for successful authentication
+
+## Expected Results
+
+- Public endpoint (`/`): Returns "Hello World!" without authentication
+- Protected endpoint (`/user`) without auth: Returns 401 Unauthorized
+- Protected endpoint with invalid credentials: Returns 401 Unauthorized  
+- Protected endpoint with valid credentials (`admin:secret`): Returns "Hello World!"

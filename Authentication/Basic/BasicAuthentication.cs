@@ -109,10 +109,14 @@ public sealed class BasicAuthenticationHandler : AuthenticationHandler<BasicAuth
             return AuthenticateResult.Fail("Invalid Basic Credentials Format");
         }
         
+		// Note: You shouldn't hardcode your credentials, this is for demonstration purposes only
+		if (creds[0] != "admin" || creds[1] != "secret") {
+            return AuthenticateResult.Fail("Invalid Basic Credentials Format");
+		}
         
         var schemeName = Scheme.Name ?? BasicAuthenticationDefaults.AuthenticationScheme;
         List<Claim> claims = [new Claim(ClaimTypes.NameIdentifier, "Bob"), new Claim(ClaimTypes.Role, "Admin")];
-        ClaimsIdentity identity = new(claims, name);
+        ClaimsIdentity identity = new(claims, schemeName);
         ClaimsPrincipal principal = new(identity);
 
         var ticket = new AuthenticationTicket(principal, schemeName);
