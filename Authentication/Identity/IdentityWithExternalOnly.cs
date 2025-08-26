@@ -57,13 +57,13 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => Results.Content("<a href=/auth/google>Google Login</a> <a href=/me>User Details</a> <a href=/logout>Log Out</a>", "text/html"));
 app.MapGet("/auth/google", EndpointExtensions.GoogleLogin);
 app.MapGet("/auth/google/callback", EndpointExtensions.GoogleCallback);
 app.MapGet("/me", EndpointExtensions.UserDetails)
     .RequireAuthorization();
-app.MapGet("/logout", () => "Logout")
-    .RequireAuthorization();
+//app.MapGet("/logout", EndpointExtensions.Logout)
+//    .RequireAuthorization();
 
 app.Run();
     
@@ -86,9 +86,16 @@ public static class IdentityExtensions
             provider,
             $"http://localhost:5000/auth/{provider.ToLower()}/callback/?ReturnUrl={redirectUrl}");
 
+}
+
+public static class ClaimsExtensions {
+
     public static string GetClaimsTable(ClaimsPrincipal user)
     {
-        var html = "<h2>Claims</h2><table><tr><th>Key</th><th>Value</th></tr>";
+        var pictureUrl = user.FindFirst("picture")?.Value;
+        var name = user.FindFirst(ClaimTypes.Name)?.Value;
+
+        var html = $"<h2>User: {name}</h2><img src='{pictureUrl}' alt='Profile Picture' style='width:100px;height:100px;border-radius:50%;'><br><h2>Claims</h2><table><tr><th>Key</th><th>Value</th></tr>";
         foreach (var claim in user?.Claims) {
             html += $"<tr><td>{claim.Type}</td><td>{claim.Value}</td></tr>";
         }
@@ -106,7 +113,8 @@ public static class EndpointExtensions
         var authenticationProperties = signInManager.ConfigureExternalAuthenticationProperties(
             properties.Provider,
             properties.RedirectUrl);
-    
+
+        Console.WriteLine(authenticationProperties.RedirectUri);
         await context.ChallengeAsync(properties.Schemes[0], authenticationProperties);
     }
 
@@ -120,21 +128,16 @@ public static class EndpointExtensions
     {
         if (context.User is ClaimsPrincipal principal)
         {
-            var pictureUrl = principal.FindFirst("picture")?.Value;
-            var name = principal.FindFirst(ClaimTypes.Name)?.Value;
-            
-            var html = $"<h2>User: {name}</h2>";
-            if (!string.IsNullOrEmpty(pictureUrl))
-            {
-                html += $"<img src='{pictureUrl}' alt='Profile Picture' style='width:100px;height:100px;border-radius:50%;'><br>";
-            }
-            html += IdentityExtensions.GetClaimsTable(principal);
-            
-            return Results.Content(html, "text/html");
+            return Results.Content(ClaimsExtensions.GetClaimsTable(principal), "text/html");
         }
-
         return Results.Ok("Unknown");
     }
+
+    /*
+    public static  Logout()
+    {
+        return TypedResults.Redirect("/me");
+    }*/
 }
 
 public record AuthSettings(List<string> Schemes, string Provider, string RedirectUrl);
