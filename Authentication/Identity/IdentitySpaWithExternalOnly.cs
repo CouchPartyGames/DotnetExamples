@@ -133,8 +133,6 @@ app.MapGet("/mylogout", async (HttpContext context, SignInManager<IdentityUser> 
 {
     var user = context.User?.Identity.Name;
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-    //await context.SignOutAsync(IdentityConstants.ApplicationScheme,ClaimsPrincipal.Current);
-    //await manager.SignOutAsync();
     return Results.Ok($"Signed out {user}");
 }).RequireAuthorization("External");
 

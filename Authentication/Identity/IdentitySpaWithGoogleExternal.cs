@@ -5,6 +5,7 @@
 #:package Microsoft.AspNetCore.Authentication.Google@10.*-preview*
 #:property PublishAot=false     
 
+// This example doesn't add Identity Endpoints
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,7 @@ builder.Services.AddAuthentication(opts =>
         opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         opts.DefaultChallengeScheme = "Google";
     })
-    .AddCookie()
+	.AddCookie()
     .AddGoogle(opts =>
     {
         opts.ClientId = builder.Configuration["Google:ClientId"];
@@ -166,3 +167,28 @@ public static class LoginUtilities
 }
 
 public record AuthSettings(List<string> Schemes, string Provider, string RedirectUrl);
+
+public sealed class CreateUserService(UserManager<IdentityUser> userManager) {
+
+	public bool NewUser(string email, string provider, string providerKey) {
+        var externalInfo = new UserLoginInfo("Google", providerKey, "Google");
+        var user = new IdentityUser { UserName = email, 
+            Email = email, 
+            EmailConfirmed = true };
+
+            // Create User
+        var result = await userManager.CreateAsync(user);
+        if (!result.Succeeded)
+        {
+            return TypedResults.InternalServerError();
+        }
+            // Link External to User
+        result = await userManager.AddLoginAsync(user, externalInfo);
+        if (!result.Succeeded)
+        {
+            return TypedResults.InternalServerError();
+        }
+
+		return true;
+	}
+}

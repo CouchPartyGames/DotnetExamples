@@ -1,8 +1,8 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.Authentication.OpenIdConnect@*
-#:package Microsoft.AspNetCore.Authentication.Google@10.*-preview*
-#:package Microsoft.Extensions.DependencyInjection@10.*-preview*
+#:package Microsoft.AspNetCore.Authentication.Google@10.*-*
+#:package Microsoft.Extensions.DependencyInjection@10.*-*
 
 // Google Authentication
 // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-9.0
