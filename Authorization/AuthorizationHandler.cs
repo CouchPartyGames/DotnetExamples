@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication();
+// Step - Register Authorization
 builder.Services.AddAuthorization();
 var app = builder.Build();
 
+// Step - Add Middleware
 // Note: Authentication middleware must come before Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World");
+app.MapGet("/", () => Results.Content("<a href=/modify>Modify</a>"));
 app.MapGet("/modify", () => "Hello World")
     .RequireAuthorization();
 

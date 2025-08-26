@@ -55,7 +55,7 @@ catch (Exception ex)
     logger.LogError(ex, "Slow API call failed");
 }
 
-public class WeatherService(HttpClient httpClient, ILogger<WeatherService> logger)
+public sealed class WeatherService(HttpClient httpClient, ILogger<WeatherService> logger)
 {
     public async Task<string> GetWeatherAsync(string city)
     {
@@ -68,7 +68,7 @@ public class WeatherService(HttpClient httpClient, ILogger<WeatherService> logge
     }
 }
 
-public class SlowApiService(HttpClient httpClient, ILogger<SlowApiService> logger)
+public sealed class SlowApiService(HttpClient httpClient, ILogger<SlowApiService> logger)
 {
     public async Task<string> TestDelayAsync(int seconds)
     {

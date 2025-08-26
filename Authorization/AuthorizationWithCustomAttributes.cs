@@ -11,7 +11,7 @@ var app = builder.Build();
 // Note: Authentication middleware must come before Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => Results.Content("<a href=/protected>Protected</a>", "text/html"));
 app.MapGet("/protected", [CustomAuthorize] () => "Protected Resource");
 app.Run();
 

@@ -28,8 +28,32 @@ public class MyTestClass
 	}
 
 
-    private int Add(int x, int y)
+    [Test]
+    public async Task TestException()
     {
-        return x + y;
+        await Assert.That(() => DivideByZero(10, 0))
+            .ThrowsExceptionOfType<DivideByZeroException>();
+    }
+
+    [Test]
+    public async Task TestExceptionWithMessage()
+    {
+        await Assert.That(() => ThrowArgumentException())
+            .ThrowsExceptionOfType<ArgumentException>()
+            .WithMessage("Invalid argument");
+    }
+
+    private int Add(int x, int y) => x + y;
+
+    private int DivideByZero(int x, int y)
+    {
+        if (y == 0)
+            throw new DivideByZeroException();
+        return x / y;
+    }
+
+    private void ThrowArgumentException()
+    {
+        throw new ArgumentException("Invalid argument");
     }
 }
