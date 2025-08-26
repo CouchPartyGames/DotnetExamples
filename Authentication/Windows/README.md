@@ -31,7 +31,7 @@ This example shows how to implement Windows Authentication in ASP.NET Core using
 
 1. Run the application:
    ```bash
-   dotnet run
+   dotnet run WindowsAuthentication.cs
    ```
 
 2. Navigate to:
