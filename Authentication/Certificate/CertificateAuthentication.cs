@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.Authentication.Certificate@10.0.0-preview*
+#:package Microsoft.AspNetCore.Authentication.Certificate@10.*-*
 
 // Certificate Authentication
 //
@@ -16,17 +16,6 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
-builder.Services.Configure<KestrelServerOptions>(opts =>
-{
-    opts.ConfigureHttpsDefaults(options =>
-    {
-            // Kestrel controls client certificate negotiation
-        options.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
-        options.CheckCertificateRevocation = false;
-    });
-});
-*/
 builder.WebHost.ConfigureKestrel((context, options) =>
 {
     // ConfigureHttpsDefaults *MUST* come before opening the Port/Listen
@@ -34,7 +23,6 @@ builder.WebHost.ConfigureKestrel((context, options) =>
     {
         listenOptions.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
         listenOptions.CheckCertificateRevocation = false;
-        //listenOptions.SslProtocols = SslProtocols.Tls13;
     });
     options.ListenAnyIP(5001, listenOptions =>
     {
