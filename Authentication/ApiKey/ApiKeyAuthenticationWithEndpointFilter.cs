@@ -2,7 +2,7 @@
 #:sdk Microsoft.NET.Sdk.Web
 
 
-// API Key Authentication for Minimal API
+// API Key Authentication for Minimal API using Endpoint Filters
 // Uses Endpoint filter to protect specific routes
 //
 // curl -v -H "X-Api-Key: " http://localhost:5000/
