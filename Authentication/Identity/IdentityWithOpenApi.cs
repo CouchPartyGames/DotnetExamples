@@ -5,7 +5,7 @@
 #:package Microsoft.AspNetCore.Identity@2.3.*
 #:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.0.*
 #:package Microsoft.AspNetCore.OpenApi@9.0.*
-#:package Scalar.AspNetCore@2.4.22
+#:package Scalar.AspNetCore@2.7.*
 #:property PublishAot=false     
 // Must disable AOT
 

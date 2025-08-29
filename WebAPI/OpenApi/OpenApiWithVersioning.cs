@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.OpenApi@10.*-*
-#:package Scalar.AspNetCore@2.4.22
+#:package Scalar.AspNetCore@2.7.*
 #:package Asp.Versioning.Http@8.1.0
 #:package Asp.Versioning.Mvc.ApiExplorer@8.1.0
 
