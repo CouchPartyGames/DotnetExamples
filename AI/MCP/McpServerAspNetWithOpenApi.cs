@@ -5,7 +5,7 @@
 #:package Microsoft.AspNetCore.OpenApi@10.*-*
 #:package Microsoft.Extensions.ApiDescription.Server@10.*-*
 #:package Microsoft.OpenApi@2.1.0
-#:property PublishAot=false     
+#:property PublishAot=false 
 
 // Setup MCP Server with OpenAPI
 //
