@@ -24,6 +24,17 @@ app.MapScalarApiReference(opts =>
 
 app.MapGet("/", () => Results.Redirect("/scalar"))
     .Produces(302);
+
+//  Step - Custom OpenAPI Stability Flags (provided by Scalar)
+// https://guides.scalar.com/scalar/scalar-api-references/openapi#x-scalar-stability
+app.MapGet("/v1", () => "Hello World!")
+    .Deprecated();
+app.MapGet("/v2", () => "Hello World!")
+    .Stable();
+app.MapGet("/v2", () => "Hello World!")
+    .Experimental();
+
+
 app.MapPost("/v1", () => "Hello World");
 app.MapPut("/v1", () => "Hello World");
 app.MapDelete("/v1", () => "Hello World");
