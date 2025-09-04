@@ -18,7 +18,6 @@ app.MapGet("/protected", () => "Secret");
 app.Run();
 
 
-
 public sealed class ApiKeyMiddleware(RequestDelegate next)
 {
 	private const string ApiKeyHeaderName = "X-Api-Key";
@@ -53,6 +52,6 @@ public sealed class ApiKeyMiddleware(RequestDelegate next)
 		ReadOnlySpan<byte> firstSpan = Encoding.UTF8.GetBytes(first);
 		ReadOnlySpan<byte> secondSpan = Encoding.UTF8.GetBytes(second);
 		
-		reateCreat
+		return CryptographicOperations.FixedTimeEquals(firstSpan, secondSpan);
 	}
 }
