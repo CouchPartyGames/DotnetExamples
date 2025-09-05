@@ -1,10 +1,10 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.EntityFrameworkCore.Sqlite@9.*
-#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.0.*
-#:package Microsoft.AspNetCore.Authentication.Google@10.*-preview*
-#:package Microsoft.AspNetCore.OpenApi@9.0.*
-#:package Scalar.AspNetCore@2.4.22
+#:package Microsoft.EntityFrameworkCore.Sqlite@10.*-*
+#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@10.*-*
+#:package Microsoft.AspNetCore.Authentication.Google@10.*-*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
+#:package Scalar.AspNetCore@2.7.*
 #:property PublishAot=false
 
 // Example of Using External Providers like Google, Apple, etc
@@ -80,7 +80,7 @@ public static class IdentityExtensions
     public const string LoginAction = "login";
     public const string RegisterAction = "register";
     
-    public static AuthSettings NewAuthSettings(string provider, string redirectUrl = "http://localhost:3000") =>
+    public static AuthSettings NewAuthSettings(string provider, string redirectUrl = "/") =>
         new AuthSettings(
             new List<string> { provider },
             provider,
