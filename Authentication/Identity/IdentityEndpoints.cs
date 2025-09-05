@@ -1,9 +1,9 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.EntityFrameworkCore.Sqlite@9.*
-#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.0.*
-#:package Microsoft.AspNetCore.OpenApi@9.0.*
-#:package Scalar.AspNetCore@2.4.22
+#:package Microsoft.EntityFrameworkCore.Sqlite@10.*-*
+#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@10.*-*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
+#:package Scalar.AspNetCore@2.7.*
 #:property PublishAot=false     
 
 // Basic Example of using .NET Core Identity Endpoints
