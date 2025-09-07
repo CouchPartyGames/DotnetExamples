@@ -14,7 +14,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 	// Step - Add Problem Details
 	//	Registers IProblemDetailsService
-builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails(opts =>
+{
+	opts.CustomizeProblemDetails = ctx =>
+	{
+		ctx.ProblemDetails.Extensions[""] = ctx.HttpContext.TraceIdentifier;
+		ctx.ProblemDetails.Extensions[""] = DateTime.UtcNow;
+		ctx.ProblemDetails.Instance = $"{ctx.HttpContext.Request.Method} {ctx.HttpContext.Request.Path}";
+	};
+});
 var app = builder.Build();
 
 	// Step - Converts unhandled exceptions into Problem Details responses
