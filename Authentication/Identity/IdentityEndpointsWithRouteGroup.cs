@@ -26,8 +26,6 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddAuthorization();
-
-// Step - Register OpenAPI (Optional)
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -35,15 +33,26 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Step - Setup OpenAPI/Scalar (Optional)
 app.MapOpenApi();
 app.MapScalarApiReference();
 
 // Step - Map Identity Endpoints/Routes
-app.MapIdentityApi<IdentityUser>();
+app.MapGroup("/v1/identity")
+    .MapIdentityApi<IdentityUser>()
+    .AddEndpointFilter(async (context, next) =>
+    {
+        var path = context.HttpContext.Request.Path.Value?.ToLower();
+        if (path == "/v1/identity/register")
+            return Results.NotFound();
+        
+        return await next(context);
+    });
+
+
 app.MapGet("/", () => Results.Content("<a href=/scalar/>OpenAPI/Scalar</a> <a href=/me>Protected Page</a>", "text/html"));
 app.MapGet("/me", () => "Hello World!").RequireAuthorization();
 app.Run();
+
 
 public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {

@@ -1,9 +1,9 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.*
-#:package Microsoft.EntityFrameworkCore.InMemory@9.*
-#:package Microsoft.AspNetCore.OpenApi@10.0.0-preview*
-#:package Scalar.AspNetCore@2.4.22
+#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@10.*-*
+#:package Microsoft.EntityFrameworkCore.InMemory@10.*-*
+#:package Microsoft.AspNetCore.OpenApi@10.*-*
+#:package Scalar.AspNetCore@2.7.*
 
 // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-9.0
 
