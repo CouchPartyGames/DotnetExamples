@@ -13,9 +13,9 @@ builder.Services.AddCors(opts =>
     opts.AddPolicy(CorsPolicyExtensions.ProductionPolicyName, 
         CorsPolicyExtensions.ProductionPolicy());
     
-    opts.AddPolicy("LocalhostOpen", corsOpts =>
+    opts.AddPolicy("LocalhostOpen", policyBuilder =>
     {
-        corsOpts
+        policyBuilder
             .WithOrigins("http://localhost:5000")
             .AllowAnyHeader()
             .AllowAnyMethod()
@@ -36,6 +36,7 @@ app.Run();
 public static class CorsPolicyExtensions
 {
     public const string ProductionPolicyName = "Production";
+    public const string DevelopmentPolicyName = "Development";
     
     public static CorsPolicy ProductionPolicy() => 
         new CorsPolicyBuilder()
@@ -43,5 +44,26 @@ public static class CorsPolicyExtensions
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
+            .Build();
+
+    // Allow Everything
+    // This is should only be used for development and testing environments
+    public static CorsPolicy DevelopmentPolicy() =>
+        new CorsPolicyBuilder()
+            .WithAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .SetIsOriginAllowed(_ => true) // allow any site
+            .Build();
+
+    public static CorsPolicy LocalhostPolicy() =>
+        new CorsPolicyBuilder()
+            .WithAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .SetIsOriginAllowed(origin =>
+            {
+                return origin.EndsWith("localhost");
+            })
             .Build();
 }
