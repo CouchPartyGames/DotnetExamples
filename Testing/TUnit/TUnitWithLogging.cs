@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet
-#:package TUnit@0.6.*
+#:package TUnit@0.61.*
 
 using TUnit.Assertions;
 using TUnit.Assertions.Extensions;
