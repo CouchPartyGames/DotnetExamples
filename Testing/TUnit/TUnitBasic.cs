@@ -3,6 +3,7 @@
 
 using TUnit.Assertions;
 using TUnit.Assertions.Extensions;
+using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
 namespace MyTestProject;
@@ -27,21 +28,22 @@ public class MyTestClass
         await Assert.That(result).IsEqualTo(expected);
 	}
 
-
+    
     [Test]
     public async Task TestException()
     {
         await Assert.That(() => DivideByZero(10, 0))
-            .ThrowsExceptionOfType<DivideByZeroException>();
+            .Throws<DivideByZeroException>();
     }
 
     [Test]
     public async Task TestExceptionWithMessage()
     {
         await Assert.That(() => ThrowArgumentException())
-            .ThrowsExceptionOfType<ArgumentException>()
+            .Throws<ArgumentException>()
             .WithMessage("Invalid argument");
     }
+
 
     private int Add(int x, int y) => x + y;
 
