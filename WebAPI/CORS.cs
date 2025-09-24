@@ -2,6 +2,7 @@
 #:sdk Microsoft.NET.Sdk.Web
 
 // Simple example of using CORS middleware
+// SetPreflightMaxAge as a simple tweak that can really reduce preflight overhead and boost performance
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 //  https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.corsservicecollectionextensions.addcors?view=aspnetcore-9.0
 builder.Services.AddCors(opts =>
 {
-    opts.AddPolicy(CorsPolicyExtensions.ProductionPolicyName, 
-        CorsPolicyExtensions.ProductionPolicy());
-    
+    // #1 - Add a CORS Policy
     opts.AddPolicy("LocalhostOpen", policyBuilder =>
     {
         policyBuilder
@@ -21,6 +20,10 @@ builder.Services.AddCors(opts =>
             .AllowAnyMethod()
             .AllowCredentials();
     });
+    
+    // #2 - Another way to add a CORS policy
+    opts.AddPolicy(CorsPolicyExtensions.ProductionPolicyName, 
+        CorsPolicyExtensions.ProductionPolicy());
 });
 var app = builder.Build();
 
@@ -44,6 +47,9 @@ public static class CorsPolicyExtensions
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
+                // Cache preflight (Max-Age) to reduce OPTIONS chatter
+                // Browsers cap duration (e.g., Chrome ~2h)
+            .SetPreflightMaxAge(TimeSpan.FromMinutes(10))
             .Build();
 
     // Allow Everything
