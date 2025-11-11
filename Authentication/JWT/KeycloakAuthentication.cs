@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview*
+#:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.*
 
 using Microsoft.IdentityModel.Tokens;
 

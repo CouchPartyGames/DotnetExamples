@@ -3,7 +3,7 @@
 #:package NetEscapades.AspNetCore.SecurityHeaders@1.2.0
 
 
-// https://github.com/andrewlock/NetEscapades.AspNetCore.SecurityHeaders
+// https://github.com/andrewlock/NetEscapades.AspNetCore.SecurityHeaderst s
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 app.UseSecurityHeaders();

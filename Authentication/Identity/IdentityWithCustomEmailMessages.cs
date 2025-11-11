@@ -1,11 +1,11 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.EntityFrameworkCore.InMemory@9.0.*
-#:package Microsoft.EntityFrameworkCore.Tools@9.0.*
+#:package Microsoft.EntityFrameworkCore.InMemory@10.0.*
+#:package Microsoft.EntityFrameworkCore.Tools@10.0.*
 #:package Microsoft.AspNetCore.Identity@2.3.*
-#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.0.*
-#:package Microsoft.AspNetCore.OpenApi@9.0.*
-#:package Scalar.AspNetCore@2.4.22
+#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@10.0.*
+#:package Microsoft.AspNetCore.OpenApi@10.0.*
+#:package Scalar.AspNetCore@2.10.*
 #:package MailKit@4.13.0
 #:property PublishAot=false     
 // Must disable AOT

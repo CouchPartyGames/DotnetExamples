@@ -2,7 +2,7 @@
 #:sdk Microsoft.NET.Sdk.Web
 #:package Microsoft.AspNetCore.OpenApi@10.*-*
 #:package Microsoft.Extensions.ApiDescription.Server@10.*-*
-#:package Scalar.AspNetCore@2.7.*
+#:package Scalar.AspNetCore@2.9.*
 #:property PublishAot=false
 
 // Simple OpenAPI Example using Enums

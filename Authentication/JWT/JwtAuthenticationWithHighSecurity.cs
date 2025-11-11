@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.0-preview.*
+#:package Microsoft.AspNetCore.Authentication.JwtBearer@10.0.*
 #:package System.IdentityModel.Tokens.Jwt@8.13.*
 
 // Default AddJwtBearer() Defaults to

@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:package ModelContextProtocol@0.3.0-preview.*
-#:package Microsoft.Extensions.Hosting@10.0.0-preview*
+#:package Microsoft.Extensions.Hosting@10.0.*
 
 // https://github.com/modelcontextprotocol/csharp-sdk/blob/main/README.md
 /*

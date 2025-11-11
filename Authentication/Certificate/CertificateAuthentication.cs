@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.Authentication.Certificate@10.*-*
+#:package Microsoft.AspNetCore.Authentication.Certificate@10.0.*
 
 // Certificate Authentication
 //

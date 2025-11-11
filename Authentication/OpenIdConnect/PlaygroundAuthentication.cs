@@ -1,6 +1,6 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.AspNetCore.Authentication.OpenIdConnect@10.0.0-preview*
+#:package Microsoft.AspNetCore.Authentication.OpenIdConnect@10.0.*
 
 // Purpose: use openidconnect.net to test oidc
 // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-oidc-web-authentication?view=aspnetcore-9.0

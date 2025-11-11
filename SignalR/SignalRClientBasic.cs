@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet
-#:package Microsoft.AspNetCore.SignalR.Client@10.*-*
+#:package Microsoft.AspNetCore.SignalR.Client@10.0.*
 
 using Microsoft.AspNetCore.SignalR.Client;
 

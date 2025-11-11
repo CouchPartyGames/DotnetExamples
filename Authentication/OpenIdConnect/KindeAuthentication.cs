@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
 #:package Kinde.SDK@1.3.1
-#:package Microsoft.AspNetCore.Authentication.OpenIdConnect@10.0.0-preview*
+#:package Microsoft.AspNetCore.Authentication.OpenIdConnect@10.0.*
 
 // Kinde Authentication
 //

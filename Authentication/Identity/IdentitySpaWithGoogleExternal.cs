@@ -1,8 +1,8 @@
 #!/usr/bin/env dotnet
 #:sdk Microsoft.NET.Sdk.Web
-#:package Microsoft.EntityFrameworkCore.Sqlite@9.*
-#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@9.0.*
-#:package Microsoft.AspNetCore.Authentication.Google@10.*-preview*
+#:package Microsoft.EntityFrameworkCore.Sqlite@10.0.*
+#:package Microsoft.AspNetCore.Identity.EntityFrameworkCore@10.0.*
+#:package Microsoft.AspNetCore.Authentication.Google@10.0.*
 #:property PublishAot=false     
 
 // This example doesn't add Identity Endpoints

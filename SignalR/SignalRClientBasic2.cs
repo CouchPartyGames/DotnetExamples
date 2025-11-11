@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet
-#:package Microsoft.AspNetCore.SignalR.Client@10.*-*
-#:package Microsoft.AspNetCore.SignalR.Protocols.MessagePack@10.*-*
-#:package Microsoft.Extensions.Logging.Console@10.*-*
+#:package Microsoft.AspNetCore.SignalR.Client@10.*
+#:package Microsoft.AspNetCore.SignalR.Protocols.MessagePack@10.*
+#:package Microsoft.Extensions.Logging.Console@10.*
 
 
 using Microsoft.AspNetCore.SignalR.Client;
