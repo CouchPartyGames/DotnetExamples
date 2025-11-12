@@ -1,5 +1,6 @@
 #!/usr/bin/env dotnet 
 #:sdk Microsoft.NET.Sdk.Web
+#:property PublishAot=false
 
 /*
  *	RFC-7807
@@ -24,9 +25,6 @@ builder.Services.AddProblemDetails(opts =>
 	};
 });
 var app = builder.Build();
-
-	// Step - Converts unhandled exceptions into Problem Details responses
-app.UseExceptionHandler();
 
 	// Step - Returns the Problem Details response for (empty) non-successful responses
 	//	Normally, 404 would return status code without a body
