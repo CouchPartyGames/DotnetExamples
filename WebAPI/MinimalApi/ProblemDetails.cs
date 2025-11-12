@@ -17,9 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
 var app = builder.Build();
 
-	// Step - Converts unhandled exceptions into Problem Details responses
-app.UseExceptionHandler();
-
 	// Step - Returns the Problem Details response for (empty) non-successful responses
 	//	Normally, 404 would return status code without a body
 app.UseStatusCodePages();
