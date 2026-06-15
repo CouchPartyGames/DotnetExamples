@@ -21,21 +21,21 @@ public static class ApiKeyAuthenticationDefaults
 public static class ApiKeyAuthenticationExtensions
 {
     public static AuthenticationBuilder AddApiKey(this AuthenticationBuilder builder) => 
-        builder.AddHmac(HmacAuthenticationDefaults.AuthenticationScheme, null, _  => {});
+        builder.AddHmac(ApiKeyAuthenticationDefaults.AuthenticationScheme, null, _  => {});
     
     public static AuthenticationBuilder AddApiKey(this AuthenticationBuilder builder,
         Action<HmacAuthenticationOptions> options) =>
-        builder.AddHmac(HmacAuthenticationDefaults.AuthenticationScheme, null, options);
+        builder.AddHmac(ApiKeyAuthenticationDefaults.AuthenticationScheme, null, options);
     
     public static AuthenticationBuilder AddApiKey(this AuthenticationBuilder builder, string? authenticationScheme, 
         Action<HmacAuthenticationOptions>? options) => 
-        builder.AddHmac(HmacAuthenticationDefaults.AuthenticationScheme, null, options);
+        builder.AddHmac(ApiKeyAuthenticationDefaults.AuthenticationScheme, null, options);
 
     public static AuthenticationBuilder AddApiKey(this AuthenticationBuilder builder, string authenticationScheme, 
         string? displayName, 
         Action<HmacAuthenticationOptions> configureOptions)
     {
-        return builder.AddScheme<HmacAuthenticationOptions, HmacAuthenticationHandler>(authenticationScheme, displayName,
+        return builder.AddScheme<ApiKeyAuthenticationOptions, HmacAuthenticationHandler>(authenticationScheme, displayName,
             configureOptions);
     }
 }
