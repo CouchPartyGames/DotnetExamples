@@ -49,7 +49,7 @@ public sealed class ApiKeyAuthenticationOptions : AuthenticationSchemeOptions
 
 public sealed class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
 {
-    public HmacAuthenticationHandler(IOptionsMonitor<HmacAuthenticationOptions> options,
+    public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder) : base(options, logger, encoder)
     {
