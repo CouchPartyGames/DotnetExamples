@@ -19,6 +19,8 @@ This directory contains comprehensive examples demonstrating various OpenAPI imp
 | **OpenApiCustomized.cs** | Custom OpenAPI configuration | Multiple document versions, output caching, custom endpoints |
 | **OpenApiWithVersioning.cs** | API versioning with OpenAPI | URL segment versioning, header-based versioning, version sets |
 | **OpenApiWithXmlDocumentation.cs** | XML documentation integration | Demonstrates XML comments in OpenAPI spec generation |
+| **OpenApiWithMultiDocuments.cs** | Multiple OpenAPI documents | Separate `public` and `internal` documents, filtered by route prefix via `options.ShouldInclude` |
+| **OpenApiWithMultiDocumentsByGroupName.cs** | Multiple OpenAPI documents | Separate `public` and `internal` documents, partitioned via `.WithGroupName` matching the document name |
 
 ### Security & Authentication
 
@@ -75,6 +77,10 @@ When running any example:
 - **Scalar UI**: `http://localhost:5000/scalar/v1` (if using Scalar)
 - **Swagger UI**: `http://localhost:5000/swagger/` (if using SwaggerUI)
 - **ReDoc**: `http://localhost:5000/api-docs/` (if using ReDoc)
+
+For the multi-document examples (`OpenApiWithMultiDocuments.cs`, `OpenApiWithMultiDocumentsByGroupName.cs`), each named document is served at its own URL:
+- **Public document**: `http://localhost:5000/openapi/public.json`
+- **Internal document**: `http://localhost:5000/openapi/internal.json`
 
 ## Security Examples
 
